@@ -4,6 +4,8 @@
 # Jetbrain Rider Cache
 .idea/
 
+Package/
+
 # Compiled Object files
 *.slo
 *.lo
