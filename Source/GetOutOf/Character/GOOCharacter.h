@@ -4,6 +4,8 @@
 #include "GameFramework/Character.h"
 #include "GOOCharacter.generated.h"
 
+class UPlayerHUDWidget;
+class UInteractionComponent;
 class UCameraComponent;
 class UInputAction;
 struct FInputActionValue;
@@ -16,6 +18,8 @@ class GETOUTOF_API AGOOCharacter : public ACharacter
 public:
 	AGOOCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void PostInitializeComponents() override;
+	virtual void BeginPlay() override;
 
 protected:
 	/** W,A,S,D 입력 처리 함수 */ 
@@ -39,8 +43,22 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	UInputAction* LookAction = nullptr;
 
+	/** Player HUD 위젯 클래스 */
+	UPROPERTY(EditDefaultsOnly, Category="UI")
+	TSubclassOf<UPlayerHUDWidget> PlayerHUDWidgetClass;
+
+	/** Player HUD 위젯 인스턴스 */
+	UPROPERTY()
+	UPlayerHUDWidget* PlayerHUDWidgetInstance;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	UInteractionComponent* InteractionComponent;
+
+public:
+	FORCEINLINE UPlayerHUDWidget* GetPlayerHUDWidget() const { return PlayerHUDWidgetInstance; }
 	
 };
