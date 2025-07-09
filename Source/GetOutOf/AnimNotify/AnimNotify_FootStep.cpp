@@ -45,29 +45,23 @@ void UAnimNotify_FootStep::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 	// Surface Type에 따른 발걸음 소리를 재생한다.
 	if (bHit)
 	{
-		LOG(Warning, TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName());
 		if (HitResult.PhysMaterial.IsValid())
 		{
 			switch (HitResult.PhysMaterial->SurfaceType)
 			{
 			case SURFACE_CONCRETE:
-				LOG(Warning, TEXT("Concrete Foot Step"));
 				SoundSubSystem->PlaySFX(ESFX::ConcreteFootStep, TargetLocation, Rotator);
 				break;
 			case SURFACE_WATER:
-				LOG(Warning, TEXT("Water Foot Step"));
 				SoundSubSystem->PlaySFX(ESFX::WaterFootStep, TargetLocation, Rotator);
 				break;
 			case SURFACE_METAL:
-				LOG(Warning, TEXT("Metal Foot Step"));
 				SoundSubSystem->PlaySFX(ESFX::MetalFootStep, TargetLocation, Rotator);
 				break;
 			case SURFACE_DIRT:
-				LOG( Warning, TEXT("Dirt Foot Step"));
 				SoundSubSystem->PlaySFX(ESFX::DirtFootStep, TargetLocation, Rotator);
 				break;
 			default:
-				LOG( Warning, TEXT("Default Foot Step"));
 				SoundSubSystem->PlaySFX(ESFX::ConcreteFootStep, TargetLocation, Rotator);
 				break;
 			}
