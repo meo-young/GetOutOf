@@ -14,4 +14,6 @@ enum class ESFX : uint8
 	DirtFootStep  = 1,
 	ConcreteFootStep = 2,
 	MetalFootStep = 3,
+	CameraBeep = 4,
+	CameraFlash = 5
 };
