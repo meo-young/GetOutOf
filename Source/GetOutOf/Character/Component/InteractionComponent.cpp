@@ -3,8 +3,7 @@
 #include "Camera/CameraComponent.h"
 #include "Character/GOOCharacter.h"
 #include "Define/DefineClass.h"
-#include "UI/CrossHairWidget.h"
-#include "UI/PlayerHUDWidget.h"
+#include "Sound/SoundSubSystem.h"
 
 UInteractionComponent::UInteractionComponent()
 {
@@ -16,9 +15,6 @@ void UInteractionComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	QueryParams.AddIgnoredActor(GetOwner());
-
-	BindToInteractionStartDelegate();
-	BindToInteractionEndedDelegate();
 }
 
 void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -44,15 +40,11 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 		QueryParams
 		);
 
-#if WITH_EDITOR
-	//DrawDebugLine(GetWorld(), CurrentLocation, TargetLocation, FColor::Green, false, -1.0f, 0, 1.0f);
-#endif
-
 	if (bHit)
 	{
 		if (!bIsInteracting)
 		{
-			OnInteractionStartedDelegate.Broadcast();
+			OnInteractionPossibleDelegate.Broadcast();
 			// 히트된 액터 이름 출력 예시
 			if (InteractionHitResult.GetActor())
 			{
@@ -66,41 +58,38 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	{
 		if (bIsInteracting)
 		{
-			OnInteractionEndedDelegate.Broadcast();
+			OnInteractionImpossibleDelegate.Broadcast();
 		}
 
 		bIsInteracting = false;
 	}
 }
 
-void UInteractionComponent::BindToInteractionStartDelegate()
+void UInteractionComponent::StartInteraction()
 {
-	// 상호작용 시작 시 크로스헤어를 빨간색으로 변경
-	if (AGOOCharacter* Player = Cast<AGOOCharacter>(GetOwner()))
+	// 카메라 '삐빗' 소리 재생
+	USoundSubSystem* SoundSubSystem = GetWorld()->GetGameInstance()->GetSubsystem<USoundSubSystem>();
+	SoundSubSystem->PlaySFX(ESFX::CameraBeep, GetOwner()->GetActorLocation(), FRotator::ZeroRotator);
+
+	// 상호작용 시작 델리게이트 호출
+	if (OnInteractionPossibleDelegate.IsBound())
 	{
-		if (UPlayerHUDWidget* PlayerHUDWidgetInstance = Player->GetPlayerHUDWidget())
-		{
-			if (UCrossHairWidget* CrossHairWidget = PlayerHUDWidgetInstance->GetCrossHairWidget())
-			{
-				LOG(Log, TEXT("Interaction 시작 델리게이트 바인딩 성공"));
-				OnInteractionStartedDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToRed);
-			}
-		}
+		OnInteractionStartedDelegate.Broadcast();
 	}
+
+	// 카메라 플래시 효과 출력 및 일지 기록
+	GetOwner()->GetWorldTimerManager().SetTimer(CameraTimerHandle, this, &ThisClass::EndInteraction, 1.5f, false);
 }
 
-void UInteractionComponent::BindToInteractionEndedDelegate()
+void UInteractionComponent::EndInteraction()
 {
-	// 상호작용 종료 시 크로스헤어를 흰색으로 변경
-	if (AGOOCharacter* Player = Cast<AGOOCharacter>(GetOwner()))
+	// 카메라 플래시 효과음 재생
+	USoundSubSystem* SoundSubSystem = GetWorld()->GetGameInstance()->GetSubsystem<USoundSubSystem>();
+	SoundSubSystem->PlaySFX(ESFX::CameraFlash, GetOwner()->GetActorLocation(), FRotator::ZeroRotator);
+
+	// 상호작용 종료 델리게이트 호출
+	if (OnInteractionEndedDelegate.IsBound())
 	{
-		if (UPlayerHUDWidget* PlayerHUDWidgetInstance = Player->GetPlayerHUDWidget())
-		{
-			if (UCrossHairWidget* CrossHairWidget = PlayerHUDWidgetInstance->GetCrossHairWidget())
-			{
-				LOG(Log, TEXT("Interaction 끝 델리게이트 바인딩 성공"));
-				OnInteractionEndedDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToWhite);
-			}
-		}
+		OnInteractionEndedDelegate.Broadcast();
 	}
 }
