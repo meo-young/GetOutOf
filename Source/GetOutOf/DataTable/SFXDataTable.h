@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Define/DefineClass.h"
+#include "Sound/SoundCue.h"
 #include "SFXDataTable.generated.h"
 
 USTRUCT(BlueprintType)
