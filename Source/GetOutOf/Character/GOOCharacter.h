@@ -21,6 +21,10 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 
+public:
+	void DisablePlayerInput();
+	void EnablePlayerInput();
+
 protected:
 	/** W,A,S,D 입력 처리 함수 */ 
 	void MoveInput(const FInputActionValue& Value);
@@ -28,11 +32,17 @@ protected:
 	/** 마우스 입력 처리 함수 */
 	void LookInput(const FInputActionValue& Value);
 
+	/** 마우스 클릭 입력 처리 함수 */
+	void InteractInput(const FInputActionValue& Value);
+	
 	/** 이동 로직 담당 함수 */
 	void DoMove(const float Forward, const float Right);
 
 	/** 마우스 회전 로직 담당 함수 */
 	void DoLook(const float Pitch, const float Yaw);
+
+	/** 마우스 클릭 로직 함수 */
+	void DoInteract();
 
 protected:
 	/** 이동 InputAction */
@@ -43,6 +53,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	UInputAction* LookAction = nullptr;
 
+	/** 마우스 클릭 Action */
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UInputAction* InteractAction = nullptr;
+	
 	/** Player HUD 위젯 클래스 */
 	UPROPERTY(EditDefaultsOnly, Category="UI")
 	TSubclassOf<UPlayerHUDWidget> PlayerHUDWidgetClass;
@@ -59,6 +73,7 @@ private:
 	UInteractionComponent* InteractionComponent;
 
 public:
+	FORCEINLINE UInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 	FORCEINLINE UPlayerHUDWidget* GetPlayerHUDWidget() const { return PlayerHUDWidgetInstance; }
 	
 };

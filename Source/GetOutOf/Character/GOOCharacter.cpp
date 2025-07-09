@@ -6,6 +6,7 @@
 #include "Component/InteractionComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Sound/SoundSubSystem.h"
 #include "UI/CrossHairWidget.h"
 #include "UI/PlayerHUDWidget.h"
 
@@ -44,7 +45,7 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 	{
 		if (MoveAction)
 		{
-			EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGOOCharacter::MoveInput);
+			EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::MoveInput);
 		}
 		else
 		{
@@ -53,11 +54,20 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 		
 		if (LookAction)
 		{
-			EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGOOCharacter::LookInput);
+			EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::LookInput);
 		}
 		else
 		{
 			LOG(Warning, TEXT("LookAction이 설정되지 않았습니다"));
+		}
+
+		if (InteractAction)
+		{
+			EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ThisClass::InteractInput);
+		}
+		else
+		{
+			LOG(Warning, TEXT("InteractAction이 설정되지 않았습니다"));
 		}
 	}
 	else
@@ -85,6 +95,27 @@ void AGOOCharacter::PostInitializeComponents()
 void AGOOCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (IsValid(InteractionComponent))
+	{
+		if (UCrossHairWidget* CrossHairWidget = PlayerHUDWidgetInstance->GetCrossHairWidget())
+		{
+			InteractionComponent->OnInteractionPossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToRed);
+			InteractionComponent->OnInteractionImpossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToWhite);
+			InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
+			InteractionComponent->OnInteractionEndedDelegate.AddUObject(this, &ThisClass::EnablePlayerInput);
+		}
+	}
+}
+
+void AGOOCharacter::DisablePlayerInput()
+{
+	DisableInput(Cast<APlayerController>(GetController()));
+}
+
+void AGOOCharacter::EnablePlayerInput()
+{
+	EnableInput(Cast<APlayerController>(GetController()));
 }
 
 void AGOOCharacter::MoveInput(const FInputActionValue& Value)
@@ -97,6 +128,11 @@ void AGOOCharacter::LookInput(const FInputActionValue& Value)
 {
 	const FVector2D LookDirection = Value.Get<FVector2D>();
 	DoLook(LookDirection.Y, LookDirection.X);
+}
+
+void AGOOCharacter::InteractInput(const FInputActionValue& Value)
+{
+	DoInteract();
 }
 
 void AGOOCharacter::DoMove(const float Forward, const float Right)
@@ -115,4 +151,28 @@ void AGOOCharacter::DoLook(const float Pitch, const float Yaw)
 		AddControllerPitchInput(Pitch);
 		AddControllerYawInput(Yaw);
 	}
+}
+
+void AGOOCharacter::DoInteract()
+{
+	if (!IsValid(InteractionComponent))
+	{
+		LOG(Warning, TEXT("InteractionComponent가 유효하지 않습니다"));
+		return;
+	}
+
+	InteractionComponent->StartInteraction();
+	
+
+	//	APlayerController* PC = Cast<APlayerController>(GetController());
+	//DisableInput(PC); // 자기 자신에게 입력 차단
+	
+	
+	// 상호작용이 가능한 상태면 '삐빗' 소리 출력 후 PostProcess 이펙트 출력.
+	// 이때는 이동이 불가능하도록 설정한다.
+	
+	// InteractionComponent -> Interact
+	// PostProcessComponent -> Interact
+
+	// 상호작용이 가능한 상태가 아니면 '삐' 소리 출력
 }
