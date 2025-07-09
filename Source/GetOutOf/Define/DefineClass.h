@@ -5,6 +5,8 @@
 #define SURFACE_METAL		SurfaceType3
 #define SURFACE_DIRT		SurfaceType4
 
+#define ECC_INTERACTION		ECC_GameTraceChannel2
+
 UENUM(BlueprintType)
 enum class ESFX : uint8
 {
