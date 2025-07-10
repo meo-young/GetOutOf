@@ -1,5 +1,20 @@
 #include "UI/TimerWidget.h"
+
+#include "GetOutOf.h"
 #include "Components/TextBlock.h"
+#include "SubSystem/StageSubSystem.h"
+
+void UTimerWidget::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+	UStageSubSystem* StageSubSystem = GetGameInstance()->GetSubsystem<UStageSubSystem>();
+	if (!IsValid(StageSubSystem)) return;
+
+	LOG(Log, TEXT("TimerWidget 델리게이트 바인딩 성공"));
+	StageSubSystem->OnStageStartedDelegate.AddUObject(this, &ThisClass::ActivateTimerText);
+	StageSubSystem->OnStageEndedDelegate.AddUObject(this, &ThisClass::ResetTimerText);
+}
 
 void UTimerWidget::ActivateTimerText()
 {
