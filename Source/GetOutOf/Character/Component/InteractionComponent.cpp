@@ -3,7 +3,7 @@
 #include "Camera/CameraComponent.h"
 #include "Character/GOOCharacter.h"
 #include "Define/DefineClass.h"
-#include "Sound/SoundSubSystem.h"
+#include "SubSystem/SoundSubSystem.h"
 
 UInteractionComponent::UInteractionComponent()
 {

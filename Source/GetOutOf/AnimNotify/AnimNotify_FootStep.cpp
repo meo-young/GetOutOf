@@ -1,7 +1,7 @@
 #include "AnimNotify/AnimNotify_FootStep.h"
 #include "GetOutOf.h"
 #include "Define/DefineClass.h"
-#include "Sound/SoundSubSystem.h"
+#include "SubSystem/SoundSubSystem.h"
 
 void UAnimNotify_FootStep::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
