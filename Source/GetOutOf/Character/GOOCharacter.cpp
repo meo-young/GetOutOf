@@ -4,9 +4,11 @@
 #include "InputActionValue.h"
 #include "Camera/CameraComponent.h"
 #include "Component/InteractionComponent.h"
+#include "Component/PostProcessEffectComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/PostProcessComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Sound/SoundSubSystem.h"
+#include "SubSystem/SoundSubSystem.h"
 #include "UI/CrossHairWidget.h"
 #include "UI/PlayerHUDWidget.h"
 
@@ -35,6 +37,9 @@ AGOOCharacter::AGOOCharacter()
 
 	// Interaction 컴포넌트 생성
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
+
+	// PostProcessEffect 컴포넌트 생성
+	PostProcessEffectComponent = CreateDefaultSubobject<UPostProcessEffectComponent>(TEXT("PostProcessEffectComponent"));
 }
 
 void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -86,8 +91,11 @@ void AGOOCharacter::PostInitializeComponents()
 		PlayerHUDWidgetInstance = CreateWidget<UPlayerHUDWidget>(GetWorld(), PlayerHUDWidgetClass);
 		if (IsValid(PlayerHUDWidgetInstance))
 		{
-			LOG(Warning,TEXT("PlayerHUDWidget 인스턴스 생성 성공"));
-			PlayerHUDWidgetInstance->AddToViewport();
+			if (!PlayerHUDWidgetInstance->IsInViewport())
+			{
+				LOG(Log,TEXT("PlayerHUDWidget 인스턴스 생성 성공"));
+				PlayerHUDWidgetInstance->AddToViewport();	
+			}
 		}
 	}
 }
@@ -162,17 +170,4 @@ void AGOOCharacter::DoInteract()
 	}
 
 	InteractionComponent->StartInteraction();
-	
-
-	//	APlayerController* PC = Cast<APlayerController>(GetController());
-	//DisableInput(PC); // 자기 자신에게 입력 차단
-	
-	
-	// 상호작용이 가능한 상태면 '삐빗' 소리 출력 후 PostProcess 이펙트 출력.
-	// 이때는 이동이 불가능하도록 설정한다.
-	
-	// InteractionComponent -> Interact
-	// PostProcessComponent -> Interact
-
-	// 상호작용이 가능한 상태가 아니면 '삐' 소리 출력
 }

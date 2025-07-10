@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "GOOCharacter.generated.h"
 
+class UPostProcessEffectComponent;
 class UPlayerHUDWidget;
 class UInteractionComponent;
 class UCameraComponent;
@@ -72,7 +73,11 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	UInteractionComponent* InteractionComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	UPostProcessEffectComponent* PostProcessEffectComponent;
+	
 public:
+	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }
 	FORCEINLINE UInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 	FORCEINLINE UPlayerHUDWidget* GetPlayerHUDWidget() const { return PlayerHUDWidgetInstance; }
 	
