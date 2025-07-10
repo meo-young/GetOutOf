@@ -1,9 +1,3 @@
 #include "UI/PlayerHUDWidget.h"
+#include "GetOutOf.h"
 #include "TimerWidget.h"
-
-void UPlayerHUDWidget::NativeConstruct()
-{
-	Super::NativeConstruct();
-
-	TimerWidget->ActivateTimerText();
-}
