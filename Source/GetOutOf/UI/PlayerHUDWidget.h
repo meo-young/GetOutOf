@@ -4,6 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUDWidget.generated.h"
 
+class UHorrorWidget;
 class UTimerWidget;
 class UCrossHairWidget;
 
@@ -19,8 +20,12 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTimerWidget* TimerWidget;
 
+	UPROPERTY(meta = (BindWidget))
+	UHorrorWidget* HorrorWidget;
+
 public:
 	FORCEINLINE UCrossHairWidget* GetCrossHairWidget() const { return CrossHairWidget; }
 	FORCEINLINE UTimerWidget* GetTimerWidget() const { return TimerWidget; }
+	FORCEINLINE UHorrorWidget* GetHorrorWidget() const { return HorrorWidget; }
 	
 };
