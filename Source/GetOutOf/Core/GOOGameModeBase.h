@@ -13,6 +13,7 @@ public:
 	virtual void StartPlay() override;
 
 private:
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	uint8 bIsFirstPlayTime : 1 = false;
 	
 };

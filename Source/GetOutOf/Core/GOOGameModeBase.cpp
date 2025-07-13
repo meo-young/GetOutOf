@@ -9,7 +9,7 @@ void AGOOGameModeBase::StartPlay()
 {
 	Super::StartPlay();
 
-	bIsFirstPlayTime = true;
+	bIsFirstPlayTime = false;
 	
 	if (bIsFirstPlayTime)
 	{
