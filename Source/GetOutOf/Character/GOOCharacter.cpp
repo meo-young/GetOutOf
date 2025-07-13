@@ -77,7 +77,7 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 
 		if (SprintAction)
 		{
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ThisClass::DoSprint);
+			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ThisClass::DoSprint);
 			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ThisClass::StopSprint);
 		}
 		else
@@ -128,6 +128,7 @@ void AGOOCharacter::BeginPlay()
 
 void AGOOCharacter::DisablePlayerInput()
 {
+	GetCharacterMovement()->MaxWalkSpeed = 150.0f;
 	DisableInput(Cast<APlayerController>(GetController()));
 }
 
@@ -138,6 +139,8 @@ void AGOOCharacter::EnablePlayerInput()
 
 void AGOOCharacter::MoveInput(const FInputActionValue& Value)
 {
+	if (!bIsEnableMove) return;
+	
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 	DoMove(MovementVector.X, MovementVector.Y);
 }
@@ -150,6 +153,8 @@ void AGOOCharacter::LookInput(const FInputActionValue& Value)
 
 void AGOOCharacter::InteractInput(const FInputActionValue& Value)
 {
+	if (!bIsEnableInteract) return;
+	
 	DoInteract();
 }
 
@@ -184,6 +189,8 @@ void AGOOCharacter::DoInteract()
 
 void AGOOCharacter::DoSprint()
 {
+	if (!bIsEnableSprint) return;
+	
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 }
 

@@ -11,5 +11,8 @@ class GETOUTOF_API AGOOGameModeBase : public AGameModeBase
 
 public:
 	virtual void StartPlay() override;
+
+private:
+	uint8 bIsFirstPlayTime : 1 = false;
 	
 };

@@ -1,5 +1,6 @@
 #include "Tutorial/TutorialManager.h"
 #include "GetOutOf.h"
+#include "Character/GOOCharacter.h"
 
 ATutorialManager::ATutorialManager()
 {
@@ -9,6 +10,23 @@ ATutorialManager::ATutorialManager()
 void ATutorialManager::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	WASDTutorial.TutorialStartDelegate.AddLambda([this](){
+		AGOOCharacter* Player = Cast<AGOOCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+		Player->SetEnableMove(true);
+	});
+
+	SprintTutorial.TutorialStartDelegate.AddLambda([this]()
+	{
+		AGOOCharacter* Player = Cast<AGOOCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+		Player->SetEnableSprint(true);
+	});
+
+	PictureTutorial.TutorialStartDelegate.AddLambda([this]()
+	{
+		AGOOCharacter* Player = Cast<AGOOCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+		Player->SetEnableInteract(true);
+	});
 
 	WASDTutorial.TutorialCondition.BindUObject(this, &ThisClass::WASDTutorialCondition);
 	SprintTutorial.TutorialCondition.BindUObject(this, &ATutorialManager::SprintTutorialCondition);

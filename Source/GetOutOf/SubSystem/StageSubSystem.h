@@ -4,8 +4,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "StageSubSystem.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnStageStarted);
-DECLARE_MULTICAST_DELEGATE(FOnStageEnded);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageStarted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageEnded);
 
 UCLASS()
 class GETOUTOF_API UStageSubSystem : public UGameInstanceSubsystem
@@ -14,9 +14,11 @@ class GETOUTOF_API UStageSubSystem : public UGameInstanceSubsystem
 
 public:
 	/** 스테이지 시작 시 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
 	FOnStageStarted OnStageStartedDelegate;
 
 	/** 스테이지 종료 시 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
 	FOnStageEnded OnStageEndedDelegate;
 
 public:

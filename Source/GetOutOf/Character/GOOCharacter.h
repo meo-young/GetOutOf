@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GOOCharacter.generated.h"
 
 class UPostProcessEffectComponent;
@@ -85,10 +86,19 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	UPostProcessEffectComponent* PostProcessEffectComponent;
+
+private:
+	uint8 bIsEnableMove : 1 = true;
+	uint8 bIsEnableSprint : 1 = true;
+	uint8 bIsEnableInteract : 1 = true;
 	
 public:
 	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }
 	FORCEINLINE UInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 	FORCEINLINE UPlayerHUDWidget* GetPlayerHUDWidget() const { return PlayerHUDWidgetInstance; }
+
+	FORCEINLINE void SetEnableMove(const bool bIsEnable) { bIsEnableMove = bIsEnable; }
+	FORCEINLINE void SetEnableSprint(const bool bIsEnable) { bIsEnableSprint = bIsEnable; GetCharacterMovement()->MaxWalkSpeed = 150.0f; }
+	FORCEINLINE void SetEnableInteract(const bool bIsEnable) { bIsEnableInteract = bIsEnable; }
 	
 };
