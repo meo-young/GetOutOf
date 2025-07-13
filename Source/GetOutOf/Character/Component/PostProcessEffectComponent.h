@@ -4,6 +4,8 @@
 #include "Components/ActorComponent.h"
 #include "PostProcessEffectComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnCameraFlashEnded);
+
 class UCameraComponent;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -16,7 +18,12 @@ public:
 	virtual void BeginPlay() override;
 
 public:
+	/** 카메라 플래시가 끝났을 때 호출되는 델리게이트 */
+	FOnCameraFlashEnded OnCameraFlashEndedDelegate;
+
+public:
 	/** 카메라 촬영 효과를 연출하는 함수 */
+	UFUNCTION()
 	void ShowExposureEffect();
 
 	/** 카메라 노출 효과를 업데이트하는 함수 */

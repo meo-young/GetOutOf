@@ -21,7 +21,7 @@ void UPostProcessEffectComponent::BeginPlay()
 
 	// InteractionComponent의 상호작용 종료 델리게이트에 함수 바인딩
 	UInteractionComponent* InteractionComponent = Player->GetInteractionComponent();
-	InteractionComponent->OnInteractionEndedDelegate.AddUObject(this, &ThisClass::ShowExposureEffect);
+	InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::ShowExposureEffect);
 }
 
 void UPostProcessEffectComponent::ShowExposureEffect()
@@ -51,6 +51,12 @@ void UPostProcessEffectComponent::UpdateExposure()
 		PlayerCameraComponent->PostProcessSettings.bOverride_AutoExposureBias = false;
 
 		GetOwner()->GetWorldTimerManager().ClearTimer(ExposureTimerHandle);
+
+		if (OnCameraFlashEndedDelegate.IsBound())
+		{
+			OnCameraFlashEndedDelegate.Broadcast();
+			OnCameraFlashEndedDelegate.RemoveAll(this);
+		}
 	}
 }
 
