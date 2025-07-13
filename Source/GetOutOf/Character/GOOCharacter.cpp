@@ -121,7 +121,7 @@ void AGOOCharacter::BeginPlay()
 			InteractionComponent->OnInteractionPossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToRed);
 			InteractionComponent->OnInteractionImpossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToWhite);
 			InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
-			InteractionComponent->OnInteractionEndedDelegate.AddUObject(this, &ThisClass::EnablePlayerInput);
+			InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::EnablePlayerInput);
 		}
 	}
 }
@@ -153,7 +153,7 @@ void AGOOCharacter::LookInput(const FInputActionValue& Value)
 
 void AGOOCharacter::InteractInput(const FInputActionValue& Value)
 {
-	if (!bIsEnableInteract) return;
+	if (!bIsEnableInteract || !InteractionComponent->IsInteracting()) return;
 	
 	DoInteract();
 }

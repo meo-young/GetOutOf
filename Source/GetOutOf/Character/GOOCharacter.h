@@ -24,7 +24,10 @@ public:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION()
 	void DisablePlayerInput();
+
+	UFUNCTION()
 	void EnablePlayerInput();
 
 protected:

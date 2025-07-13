@@ -7,7 +7,7 @@
 DECLARE_MULTICAST_DELEGATE(FOnInteractionPossible);
 DECLARE_MULTICAST_DELEGATE(FOnInteractionImPossible);
 DECLARE_MULTICAST_DELEGATE(FOnInteractionStarted);
-DECLARE_MULTICAST_DELEGATE(FOnInteractionEnded);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionEnded);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GETOUTOF_API UInteractionComponent : public UActorComponent
@@ -30,6 +30,7 @@ public:
 	FOnInteractionStarted OnInteractionStartedDelegate;
 
 	/** 상호작용으로 카메라 플래시 효과가 끝났을 때 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
 	FOnInteractionEnded OnInteractionEndedDelegate;
 
 public:
@@ -45,5 +46,8 @@ private:
 	FTimerHandle CameraTimerHandle;
 	
 	uint8 bIsInteracting : 1 = false;
+
+public:
+	FORCEINLINE bool IsInteracting() const { return bIsInteracting; }
 	
 };

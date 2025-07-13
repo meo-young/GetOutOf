@@ -45,11 +45,6 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 		if (!bIsInteracting)
 		{
 			OnInteractionPossibleDelegate.Broadcast();
-			// 히트된 액터 이름 출력 예시
-			if (InteractionHitResult.GetActor())
-			{
-				LOG(Log, TEXT("Hit Actor: %s"), *InteractionHitResult.GetActor()->GetName());
-			}	
 		}
 		
 		bIsInteracting = true;
