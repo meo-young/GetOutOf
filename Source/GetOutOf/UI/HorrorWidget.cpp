@@ -13,6 +13,9 @@ void UHorrorWidget::NativeOnInitialized()
 		{
 			TutorialManager->WASDTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowWASDTutorialWidget);
 			TutorialManager->WASDTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemoveWASDTutorialWidget);
+
+			TutorialManager->SprintTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowSprintTutorialWidget);
+			TutorialManager->SprintTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemoveSprintTutorialWidget);
 			
 			TutorialManager->PictureTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowPictreTutorialWidget);
 			TutorialManager->PictureTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemovePictreTutorialWidget);

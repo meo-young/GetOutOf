@@ -55,12 +55,18 @@ private:
 	/** WASD 튜토리얼 조건을 확인하는 함수 */
 	bool WASDTutorialCondition();
 
+	/** Sprint 튜토리얼 조건을 확인하는 함수 */
+	bool SprintTutorialCondition();
+
 	/** 촬영 튜토리얼 조건을 확인하는 함수 */
 	bool PictureTutorialCondition();
 
 public:
 	UPROPERTY()
 	FTutorial WASDTutorial;
+
+	UPROPERTY()
+	FTutorial SprintTutorial;
 
 	UPROPERTY()
 	FTutorial PictureTutorial;

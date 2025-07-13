@@ -11,9 +11,11 @@ void ATutorialManager::BeginPlay()
 	Super::BeginPlay();
 
 	WASDTutorial.TutorialCondition.BindUObject(this, &ThisClass::WASDTutorialCondition);
+	SprintTutorial.TutorialCondition.BindUObject(this, &ATutorialManager::SprintTutorialCondition);
 	PictureTutorial.TutorialCondition.BindUObject(this, &ThisClass::PictureTutorialCondition);
 	
 	TutorialEventList.Emplace(WASDTutorial);
+	TutorialEventList.Emplace(SprintTutorial);
 	TutorialEventList.Emplace(PictureTutorial);
 }
 
@@ -82,6 +84,13 @@ bool ATutorialManager::WASDTutorialCondition()
 	bool bDDown = GetWorld()->GetFirstPlayerController()->IsInputKeyDown(EKeys::D);
 
 	return bWDown || bADown || bSDown || bDDown; 
+}
+
+bool ATutorialManager::SprintTutorialCondition()
+{
+	bool bShiftDown = GetWorld()->GetFirstPlayerController()->IsInputKeyDown(EKeys::LeftShift);
+
+	return bShiftDown;
 }
 
 bool ATutorialManager::PictureTutorialCondition()
