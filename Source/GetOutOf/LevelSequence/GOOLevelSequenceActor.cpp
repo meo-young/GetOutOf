@@ -2,6 +2,18 @@
 #include "GetOutOf.h"
 #include "LevelSequence.h"
 #include "LevelSequencePlayer.h"
+#include "Components/BoxComponent.h"
+#include "Define/DefineClass.h"
+
+AGOOLevelSequenceActor::AGOOLevelSequenceActor(const FObjectInitializer& Init) :Super(Init)
+{
+	EventTriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Event Trigger Box"));
+	EventTriggerBox->SetupAttachment(GetRootComponent());
+	EventTriggerBox->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	EventTriggerBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	
+	//EventTriggerBox->SetCollisionResponseToChannel(ECC_INTERACTION, ECR_Block);
+}
 
 void AGOOLevelSequenceActor::PostInitializeComponents()
 {
@@ -31,6 +43,16 @@ void AGOOLevelSequenceActor::PlayLevelSequence()
 	}
 
 	LevelSequencePlayer->Play();
+}
+
+void AGOOLevelSequenceActor::PlayLevelSequenceForLoop()
+{
+	if (OnSequenceStartedDelegate.IsBound())
+	{
+		OnSequenceStartedDelegate.Broadcast();
+	}
+
+	LevelSequencePlayer->PlayLooping();
 }
 
 void AGOOLevelSequenceActor::OnSequenceEnded()
