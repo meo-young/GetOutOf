@@ -8,7 +8,6 @@
 AGOOLevelSequenceActor::AGOOLevelSequenceActor(const FObjectInitializer& Init) :Super(Init)
 {
 	EventTriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Event Trigger Box"));
-	EventTriggerBox->SetupAttachment(GetRootComponent());
 	EventTriggerBox->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	EventTriggerBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	
@@ -26,6 +25,8 @@ void AGOOLevelSequenceActor::PostInitializeComponents()
 		LOG(Error, TEXT("LevelSequence Is Not Valid !"));
 		return;
 	}
+
+	if (LevelSequencePlayer) return;
 
 	// 재생 전에 레벨 시퀀스 플레이어를 변수화 해야 종료 델리게이트에서 활용할 수 있다.
 	ALevelSequenceActor* OutActor;
@@ -53,6 +54,11 @@ void AGOOLevelSequenceActor::PlayLevelSequenceForLoop()
 	}
 
 	LevelSequencePlayer->PlayLooping();
+}
+
+void AGOOLevelSequenceActor::StopLevelSequence()
+{
+	LevelSequencePlayer->Stop();
 }
 
 void AGOOLevelSequenceActor::OnSequenceEnded()

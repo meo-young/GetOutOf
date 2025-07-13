@@ -34,6 +34,10 @@ public:
 	/** 등록된 LevelSequence를 루프로 재생하는 함수 */
 	UFUNCTION(BlueprintCallable)
 	void PlayLevelSequenceForLoop();
+
+	/** 등록된 LevelSequence를 루프로 재생하는 함수 */
+	UFUNCTION(BlueprintCallable)
+	void StopLevelSequence();
 	
 	/** LevelSequence의 종료 델리게이트에 바인딩할 함수 */
 	UFUNCTION(BlueprintCallable)
