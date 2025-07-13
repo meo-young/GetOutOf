@@ -74,6 +74,16 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 		{
 			LOG(Warning, TEXT("InteractAction이 설정되지 않았습니다"));
 		}
+
+		if (SprintAction)
+		{
+			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ThisClass::DoSprint);
+			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ThisClass::StopSprint);
+		}
+		else
+		{
+			LOG(Warning, TEXT("SprintAction이 설정되지 않았습니다"));
+		}
 	}
 	else
 	{
@@ -170,4 +180,14 @@ void AGOOCharacter::DoInteract()
 	}
 
 	InteractionComponent->StartInteraction();
+}
+
+void AGOOCharacter::DoSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+}
+
+void AGOOCharacter::StopSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 150.0f;
 }

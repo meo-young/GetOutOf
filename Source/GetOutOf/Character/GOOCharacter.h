@@ -45,6 +45,12 @@ protected:
 	/** 마우스 클릭 로직 함수 */
 	void DoInteract();
 
+	/** Sprint 로직 함수 */
+	void DoSprint();
+
+	/** Sprint 종료 로직 함수 */
+	void StopSprint();
+
 protected:
 	/** 이동 InputAction */
 	UPROPERTY(EditDefaultsOnly, Category="Input")
@@ -57,6 +63,10 @@ protected:
 	/** 마우스 클릭 Action */
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	UInputAction* InteractAction = nullptr;
+
+	/** Shift 클릭 Action */
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UInputAction* SprintAction = nullptr;
 	
 	/** Player HUD 위젯 클래스 */
 	UPROPERTY(EditDefaultsOnly, Category="UI")
