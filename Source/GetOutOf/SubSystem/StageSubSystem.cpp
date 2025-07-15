@@ -1,6 +1,8 @@
 #include "SubSystem/StageSubSystem.h"
 #include "GetOutOf.h"
+#include "SoundSubSystem.h"
 #include "Character/Component/PostProcessEffectComponent.h"
+#include "Define/DefineClass.h"
 #include "GameFramework/Character.h"
 
 UStageSubSystem::UStageSubSystem()
@@ -40,6 +42,9 @@ void UStageSubSystem::StartStage()
 		CurrentStartLSA->PlayLevelSequenceForLoop();
 	}
 
+	/*USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>();
+	SoundSubsystem->PlayBGM(EBGM::HorrorBGM);*/
+
 	UPostProcessEffectComponent* ProcessEffectComponent = GetWorld()->GetFirstPlayerController()->GetCharacter()->FindComponentByClass<UPostProcessEffectComponent>();
 	ProcessEffectComponent->OnCameraFlashEndedDelegate.AddUObject(this, &UStageSubSystem::ShowEndLevelSequence);
 }
@@ -56,6 +61,9 @@ void UStageSubSystem::EndStage()
 	{
 		CurrentEndLSA->StopLevelSequence();
 	}
+
+	/*USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>();
+	SoundSubsystem->StopBGM();*/
 
 	++CurrentStageNum;
 }

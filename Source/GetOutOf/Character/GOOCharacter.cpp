@@ -7,6 +7,7 @@
 #include "Component/PostProcessEffectComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/PostProcessComponent.h"
+#include "Core/GOOPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "SubSystem/SoundSubSystem.h"
 #include "UI/CrossHairWidget.h"
@@ -91,38 +92,22 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 	}
 }
 
-void AGOOCharacter::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-
-	// Player HUD 위젯 인스턴스 생성 및 뷰포트에 추가
-	if (IsValid(PlayerHUDWidgetClass))
-	{
-		PlayerHUDWidgetInstance = CreateWidget<UPlayerHUDWidget>(GetWorld(), PlayerHUDWidgetClass);
-		if (IsValid(PlayerHUDWidgetInstance))
-		{
-			if (!PlayerHUDWidgetInstance->IsInViewport())
-			{
-				LOG(Log,TEXT("PlayerHUDWidget 인스턴스 생성 성공"));
-				PlayerHUDWidgetInstance->AddToViewport();	
-			}
-		}
-	}
-}
-
 void AGOOCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (IsValid(InteractionComponent))
+	
+	if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetController()))
 	{
-		if (UCrossHairWidget* CrossHairWidget = PlayerHUDWidgetInstance->GetCrossHairWidget())
+		if (IsValid(InteractionComponent))
 		{
-			InteractionComponent->OnInteractionPossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToRed);
-			InteractionComponent->OnInteractionImpossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToWhite);
-			InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
-			InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::EnablePlayerInput);
-		}
+			if (UCrossHairWidget* CrossHairWidget = PlayerController->GetPlayerHUDWidget()->GetCrossHairWidget())
+			{
+				InteractionComponent->OnInteractionPossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToRed);
+				InteractionComponent->OnInteractionImpossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToWhite);
+				InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
+				InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::EnablePlayerInput);
+			}
+		}	
 	}
 }
 

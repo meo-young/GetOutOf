@@ -17,3 +17,9 @@ enum class ESFX : uint8
 	CameraBeep = 4,
 	CameraFlash = 5
 };
+
+UENUM(BlueprintType)
+enum class EBGM : uint8
+{
+	HorrorBGM = 0,
+};

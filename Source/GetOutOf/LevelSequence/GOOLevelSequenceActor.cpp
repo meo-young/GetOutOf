@@ -3,7 +3,9 @@
 #include "LevelSequence.h"
 #include "LevelSequencePlayer.h"
 #include "Components/BoxComponent.h"
+#include "Character/Component/InteractionComponent.h"
 #include "Define/DefineClass.h"
+#include "GameFramework/Character.h"
 
 AGOOLevelSequenceActor::AGOOLevelSequenceActor(const FObjectInitializer& Init) :Super(Init)
 {
@@ -34,6 +36,14 @@ void AGOOLevelSequenceActor::PostInitializeComponents()
 
 	// 종료 델리게이트에 함수를 바인딩한다.
 	LevelSequencePlayer->OnFinished.AddDynamic(this, &ThisClass::OnSequenceEnded);
+}
+
+void AGOOLevelSequenceActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UInteractionComponent* InteractionComponent = GetWorld()->GetFirstPlayerController()->GetCharacter()->FindComponentByClass<UInteractionComponent>();
+	InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::DisableCollision);
 }
 
 void AGOOLevelSequenceActor::PlayLevelSequence()
@@ -67,4 +77,9 @@ void AGOOLevelSequenceActor::OnSequenceEnded()
 	{
 		OnSequenceEndedDelegate.Broadcast();
 	}
+}
+
+void AGOOLevelSequenceActor::DisableCollision()
+{
+	EventTriggerBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

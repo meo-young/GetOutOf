@@ -37,10 +37,6 @@ void UAnimNotify_FootStep::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 		ECC_Visibility,
 		QueryParams
 		);
-
-#if WITH_EDITOR
-	DrawDebugLine(World, CurrentLocation, TargetLocation, FColor::Red, false, 3.0f, 0, 1.0f);
-#endif
 	
 	// Surface Type에 따른 발걸음 소리를 재생한다.
 	if (bHit)

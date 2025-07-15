@@ -1,5 +1,8 @@
 #include "SubSystem/SoundSubSystem.h"
 #include "GetOutOf.h"
+#include "StageSubSystem.h"
+#include "Components/AudioComponent.h"
+#include "DataTable/BGMDataTable.h"
 #include "DataTable/SFXDataTable.h"
 #include "Define/DefineClass.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,14 +15,21 @@ USoundSubSystem::USoundSubSystem()
 	{
 		SFXDataTable = DT_SFX.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> DT_BGM(TEXT("/Game/_GetOutOf/DataTable/DT_BGM"));
+	if (DT_BGM.Succeeded())
+	{
+		BGMDataTable = DT_BGM.Object;
+	}
 }
 
 void USoundSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	// SFXDataTable의 모든 데이터를 추출한다.
+	// DataTable의 모든 데이터를 추출한다.
 	SFXDataTable->GetAllRows<FSFXDataTable>(TEXT(""), SFXDataRows);
+	BGMDataTable->GetAllRows<FBGMDataTable>(TEXT(""), BGMDataRows);
 }
 
 void USoundSubSystem::PlaySFX(ESFX SFX, const FVector& InLocation, const FRotator& InRotator)
@@ -44,5 +54,42 @@ void USoundSubSystem::PlaySFX(ESFX SFX, const FVector& InLocation, const FRotato
 
 	// 공간 음향을 재생한다.
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SoundCue, InLocation, InRotator, VolumeMultiplier, 1.0f, 0.0f);
+}
+
+void USoundSubSystem::PlayBGM(EBGM BGM)
+{
+	if (BGMDataRows.Num() <= 0)
+	{
+		LOG(Error, TEXT("BGM Data Table이 유효하지 않습니다."));
+		return;
+	}
+
+	// SFX Enum에 해당하는 사운드를 가져온다.
+	USoundCue* SoundCue = BGMDataRows[static_cast<int32>(BGM)]->SoundCue;
+	if (!IsValid(SoundCue))
+	{
+		LOG(Error, TEXT("BGM Data Table에 정의된 SoundCue가 유효하지 않습니다."));
+		return;
+	}
+
+	LOG(Warning, TEXT("BGM 재생"));
+	
+	// 기존 BGM 정지
+	if (CurrentBGMAudioComponent && CurrentBGMAudioComponent->IsPlaying())
+	{
+		CurrentBGMAudioComponent->Stop();
+	}
+
+	// UGameplayStatics를 사용하여 BGM 재생
+	CurrentBGMAudioComponent = UGameplayStatics::SpawnSound2D(GetWorld(), SoundCue);
+}
+
+void USoundSubSystem::StopBGM()
+{
+	// 기존 BGM 정지
+	if (CurrentBGMAudioComponent && CurrentBGMAudioComponent->IsPlaying())
+	{
+		CurrentBGMAudioComponent->Stop();
+	}
 }
 

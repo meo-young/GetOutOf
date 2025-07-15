@@ -20,7 +20,6 @@ class GETOUTOF_API AGOOCharacter : public ACharacter
 public:
 	AGOOCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 
 public:
@@ -71,14 +70,6 @@ protected:
 	/** Shift 클릭 Action */
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	UInputAction* SprintAction = nullptr;
-	
-	/** Player HUD 위젯 클래스 */
-	UPROPERTY(EditDefaultsOnly, Category="UI")
-	TSubclassOf<UPlayerHUDWidget> PlayerHUDWidgetClass;
-
-	/** Player HUD 위젯 인스턴스 */
-	UPROPERTY()
-	UPlayerHUDWidget* PlayerHUDWidgetInstance;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
@@ -98,7 +89,6 @@ private:
 public:
 	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }
 	FORCEINLINE UInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
-	FORCEINLINE UPlayerHUDWidget* GetPlayerHUDWidget() const { return PlayerHUDWidgetInstance; }
 
 	FORCEINLINE void SetEnableMove(const bool bIsEnable) { bIsEnableMove = bIsEnable; }
 	FORCEINLINE void SetEnableSprint(const bool bIsEnable) { bIsEnableSprint = bIsEnable; GetCharacterMovement()->MaxWalkSpeed = 150.0f; }

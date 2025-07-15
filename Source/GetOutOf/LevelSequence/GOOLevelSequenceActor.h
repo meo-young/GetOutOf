@@ -18,6 +18,7 @@ class GETOUTOF_API AGOOLevelSequenceActor : public ALevelSequenceActor
 public:
 	AGOOLevelSequenceActor(const FObjectInitializer& Init);
 	virtual void PostInitializeComponents() override;
+	virtual void BeginPlay() override;
 	
 public:
 	/** LevelSequence가 시작될 때 호출되는 델리게이트 */
@@ -42,6 +43,10 @@ public:
 	/** LevelSequence의 종료 델리게이트에 바인딩할 함수 */
 	UFUNCTION(BlueprintCallable)
 	void OnSequenceEnded();
+
+private:
+	UFUNCTION()
+	void DisableCollision();
 
 private:
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = true))
