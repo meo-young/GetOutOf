@@ -2,16 +2,19 @@
 
 #include "CoreMinimal.h"
 #include "LevelSequenceActor.h"
+#include "Interface/Interactable.h"
 #include "GOOLevelSequenceActor.generated.h"
 
 class UBoxComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSequenceStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSequenceEnded);
 
 class ULevelSequence;
 
 UCLASS()
-class GETOUTOF_API AGOOLevelSequenceActor : public ALevelSequenceActor
+class GETOUTOF_API AGOOLevelSequenceActor : public ALevelSequenceActor, public IInteractable
 {
 	GENERATED_BODY()
 
@@ -21,10 +24,16 @@ public:
 	virtual void BeginPlay() override;
 	
 public:
+	/** LevelSequence에 Interact가 시작될 때 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
+	FOnInteractionStart OnInteractionStartDelegate;
+	
 	/** LevelSequence가 시작될 때 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
 	FOnSequenceStarted OnSequenceStartedDelegate;
 
 	/** LevelSequence가 종료될 때 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
 	FOnSequenceEnded OnSequenceEndedDelegate;
 	
 public:
@@ -43,6 +52,9 @@ public:
 	/** LevelSequence의 종료 델리게이트에 바인딩할 함수 */
 	UFUNCTION(BlueprintCallable)
 	void OnSequenceEnded();
+
+	/** Interactable 인터페이스의 Interact 함수 구현 */
+	virtual void Interact_Implementation() override;
 
 private:
 	UFUNCTION()

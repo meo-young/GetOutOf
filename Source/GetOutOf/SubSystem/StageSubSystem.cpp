@@ -41,12 +41,6 @@ void UStageSubSystem::StartStage()
 		CurrentStartLSA = GetWorld()->SpawnActor<AGOOLevelSequenceActor>(LevelSequenceRows[CurrentStageNum]->StartLevelSequenceActor);
 		CurrentStartLSA->PlayLevelSequenceForLoop();
 	}
-
-	/*USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>();
-	SoundSubsystem->PlayBGM(EBGM::HorrorBGM);*/
-
-	UPostProcessEffectComponent* ProcessEffectComponent = GetWorld()->GetFirstPlayerController()->GetCharacter()->FindComponentByClass<UPostProcessEffectComponent>();
-	ProcessEffectComponent->OnCameraFlashEndedDelegate.AddUObject(this, &UStageSubSystem::ShowEndLevelSequence);
 }
 
 void UStageSubSystem::EndStage()
@@ -61,9 +55,6 @@ void UStageSubSystem::EndStage()
 	{
 		CurrentEndLSA->StopLevelSequence();
 	}
-
-	/*USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>();
-	SoundSubsystem->StopBGM();*/
 
 	++CurrentStageNum;
 }

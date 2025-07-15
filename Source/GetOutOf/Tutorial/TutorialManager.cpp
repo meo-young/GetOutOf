@@ -113,8 +113,6 @@ bool ATutorialManager::SprintTutorialCondition()
 
 bool ATutorialManager::PictureTutorialCondition()
 {
-	bool bPictureInputDown = GetWorld()->GetFirstPlayerController()->IsInputKeyDown(EKeys::LeftMouseButton);
-
 	return bPictureInputDown;
 }
 

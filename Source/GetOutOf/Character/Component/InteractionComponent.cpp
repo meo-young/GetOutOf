@@ -3,6 +3,7 @@
 #include "Camera/CameraComponent.h"
 #include "Character/GOOCharacter.h"
 #include "Define/DefineClass.h"
+#include "Interface/Interactable.h"
 #include "SubSystem/SoundSubSystem.h"
 
 UInteractionComponent::UInteractionComponent()
@@ -62,6 +63,9 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 void UInteractionComponent::StartInteraction()
 {
+	// 상호작용 오브젝트 캐스팅
+	InteractableObject = Cast<IInteractable>(InteractionHitResult.GetActor());
+	
 	// 카메라 '삐빗' 소리 재생
 	USoundSubSystem* SoundSubSystem = GetWorld()->GetGameInstance()->GetSubsystem<USoundSubSystem>();
 	SoundSubSystem->PlaySFX(ESFX::CameraBeep, GetOwner()->GetActorLocation(), FRotator::ZeroRotator);
@@ -78,6 +82,12 @@ void UInteractionComponent::StartInteraction()
 
 void UInteractionComponent::EndInteraction()
 {
+	// 상호작용 오브젝트가 유효하다면 상호작용 함수 호출
+	if (InteractableObject)
+	{
+		IInteractable::Execute_Interact(InteractableObject->_getUObject());
+	}
+	
 	// 카메라 플래시 효과음 재생
 	USoundSubSystem* SoundSubSystem = GetWorld()->GetGameInstance()->GetSubsystem<USoundSubSystem>();
 	SoundSubSystem->PlaySFX(ESFX::CameraFlash, GetOwner()->GetActorLocation(), FRotator::ZeroRotator);

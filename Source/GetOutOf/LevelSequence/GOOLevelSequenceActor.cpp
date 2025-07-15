@@ -12,8 +12,6 @@ AGOOLevelSequenceActor::AGOOLevelSequenceActor(const FObjectInitializer& Init) :
 	EventTriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Event Trigger Box"));
 	EventTriggerBox->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	EventTriggerBox->SetCollisionResponseToAllChannels(ECR_Ignore);
-	
-	//EventTriggerBox->SetCollisionResponseToChannel(ECC_INTERACTION, ECR_Block);
 }
 
 void AGOOLevelSequenceActor::PostInitializeComponents()
@@ -76,6 +74,14 @@ void AGOOLevelSequenceActor::OnSequenceEnded()
 	if (OnSequenceEndedDelegate.IsBound())
 	{
 		OnSequenceEndedDelegate.Broadcast();
+	}
+}
+
+void AGOOLevelSequenceActor::Interact_Implementation()
+{
+	if (OnInteractionStartDelegate.IsBound())
+	{
+		OnInteractionStartDelegate.Broadcast();
 	}
 }
 

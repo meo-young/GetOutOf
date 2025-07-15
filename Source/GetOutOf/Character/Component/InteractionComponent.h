@@ -4,6 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "InteractionComponent.generated.h"
 
+class IInteractable;
 DECLARE_MULTICAST_DELEGATE(FOnInteractionPossible);
 DECLARE_MULTICAST_DELEGATE(FOnInteractionImPossible);
 DECLARE_MULTICAST_DELEGATE(FOnInteractionStarted);
@@ -46,6 +47,8 @@ private:
 	FTimerHandle CameraTimerHandle;
 	
 	uint8 bIsInteracting : 1 = false;
+
+	IInteractable* InteractableObject = nullptr;
 
 public:
 	FORCEINLINE bool IsInteracting() const { return bIsInteracting; }

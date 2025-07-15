@@ -15,6 +15,7 @@ class GETOUTOF_API IInteractable
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintNativeEvent)
 	void Interact();
 	
 };

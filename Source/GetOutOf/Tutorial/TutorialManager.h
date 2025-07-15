@@ -76,7 +76,13 @@ private:
 	TArray<FTutorial> TutorialEventList;
 
 	uint8 bIsTutorialActive : 1 = false;
-
+	uint8 bPictureInputDown : 1 = false;
+	
 	FTimerHandle TutorialHandle;
+
+
+public:
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetPictureInputDown(const bool bDown) { bPictureInputDown = bDown; }
 
 };
