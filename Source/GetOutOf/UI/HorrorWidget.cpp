@@ -17,8 +17,14 @@ void UHorrorWidget::NativeOnInitialized()
 			TutorialManager->SprintTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowSprintTutorialWidget);
 			TutorialManager->SprintTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemoveSprintTutorialWidget);
 			
-			TutorialManager->PictureTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowPictreTutorialWidget);
-			TutorialManager->PictureTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemovePictreTutorialWidget);
+			TutorialManager->PictureTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowPictureTutorialWidget);
+			TutorialManager->PictureTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemovePictureTutorialWidget);
+
+			TutorialManager->InventoryTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowInventoryTutorialWidget);
+			TutorialManager->InventoryTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemoveInventoryTutorialWidget);
+
+			TutorialManager->FlashTutorial.TutorialStartDelegate.AddUObject(this, &ThisClass::ShowFlashTutorialWidget);
+			TutorialManager->FlashTutorial.TutorialEndDelegate.AddUObject(this, &ThisClass::RemoveFlashTutorialWidget);
 		}
 	}
 }

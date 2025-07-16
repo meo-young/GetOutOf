@@ -61,6 +61,12 @@ private:
 	/** 촬영 튜토리얼 조건을 확인하는 함수 */
 	bool PictureTutorialCondition();
 
+	/** 인벤토리 튜토리얼 조건을 확인하는 함수 */
+	bool InventoryTutorialCondition();
+
+	/** FlashLight 튜토리얼 조건을 확인하는 함수 */
+	bool FlashTutorialCondition();
+
 public:
 	UPROPERTY()
 	FTutorial WASDTutorial;
@@ -70,6 +76,12 @@ public:
 
 	UPROPERTY()
 	FTutorial PictureTutorial;
+
+	UPROPERTY()
+	FTutorial InventoryTutorial;
+
+	UPROPERTY()
+	FTutorial FlashTutorial;
 
 private:
 	UPROPERTY()

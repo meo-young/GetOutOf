@@ -18,6 +18,8 @@ void ATutorialGameMode::StartPlay()
 			Player->SetEnableMove(false);
 			Player->SetEnableSprint(false);
 			Player->SetEnableInteract(false);
+			Player->SetEnableFlashLight(false);
+			Player->SetEnableInventory(false);
 				
 			TutorialManager->StartTutorial();
 		}

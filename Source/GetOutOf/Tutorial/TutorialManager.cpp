@@ -28,13 +28,29 @@ void ATutorialManager::BeginPlay()
 		Player->SetEnableInteract(true);
 	});
 
+	InventoryTutorial.TutorialStartDelegate.AddLambda([this]()
+	{
+		AGOOCharacter* Player = Cast<AGOOCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+		Player->SetEnableInventory(true);
+	});
+
+	FlashTutorial.TutorialStartDelegate.AddLambda([this]()
+	{
+		AGOOCharacter* Player = Cast<AGOOCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+		Player->SetEnableFlashLight(true);
+	});
+
 	WASDTutorial.TutorialCondition.BindUObject(this, &ThisClass::WASDTutorialCondition);
 	SprintTutorial.TutorialCondition.BindUObject(this, &ATutorialManager::SprintTutorialCondition);
 	PictureTutorial.TutorialCondition.BindUObject(this, &ThisClass::PictureTutorialCondition);
+	InventoryTutorial.TutorialCondition.BindUObject(this, &ThisClass::InventoryTutorialCondition);
+	FlashTutorial.TutorialCondition.BindUObject(this, &ThisClass::FlashTutorialCondition);
 	
 	TutorialEventList.Emplace(WASDTutorial);
 	TutorialEventList.Emplace(SprintTutorial);
 	TutorialEventList.Emplace(PictureTutorial);
+	TutorialEventList.Emplace(InventoryTutorial);
+	TutorialEventList.Emplace(FlashTutorial);
 }
 
 void ATutorialManager::Tick(float DeltaTime)
@@ -114,5 +130,19 @@ bool ATutorialManager::SprintTutorialCondition()
 bool ATutorialManager::PictureTutorialCondition()
 {
 	return bPictureInputDown;
+}
+
+bool ATutorialManager::InventoryTutorialCondition()
+{
+	bool bTabDown = GetWorld()->GetFirstPlayerController()->IsInputKeyDown(EKeys::Tab);
+
+	return bTabDown;
+}
+
+bool ATutorialManager::FlashTutorialCondition()
+{
+	bool bFDown = GetWorld()->GetFirstPlayerController()->IsInputKeyDown(EKeys::F);
+
+	return bFDown;
 }
 

@@ -26,9 +26,21 @@ public:
 	void RemoveSprintTutorialWidget();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void ShowPictreTutorialWidget();
+	void ShowPictureTutorialWidget();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void RemovePictreTutorialWidget();
+	void RemovePictureTutorialWidget();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowInventoryTutorialWidget();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RemoveInventoryTutorialWidget();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowFlashTutorialWidget();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RemoveFlashTutorialWidget();
 	
 };

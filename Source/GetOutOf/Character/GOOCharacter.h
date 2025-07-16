@@ -131,5 +131,7 @@ public:
 	FORCEINLINE void SetEnableMove(const bool bIsEnable) { bIsEnableMove = bIsEnable; }
 	FORCEINLINE void SetEnableSprint(const bool bIsEnable) { bIsEnableSprint = bIsEnable; GetCharacterMovement()->MaxWalkSpeed = 150.0f; }
 	FORCEINLINE void SetEnableInteract(const bool bIsEnable) { bIsEnableInteract = bIsEnable; }
+	FORCEINLINE void SetEnableFlashLight(const bool bIsEnable) { bIsEnableFlashLight = bIsEnable; }
+	FORCEINLINE void SetEnableInventory(const bool bIsEnable) { bIsEnableInventory = bIsEnable; }
 	
 };
