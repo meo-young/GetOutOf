@@ -5,6 +5,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GOOCharacter.generated.h"
 
+class USpotLightComponent;
+class USpringArmComponent;
 class UPostProcessEffectComponent;
 class UPlayerHUDWidget;
 class UInteractionComponent;
@@ -39,6 +41,9 @@ protected:
 	/** 마우스 클릭 입력 처리 함수 */
 	void InteractInput(const FInputActionValue& Value);
 	
+	/** "F"키 입력 처리 함수 */
+	void FlashLightInput(const FInputActionValue& Value);
+	
 	/** 이동 로직 담당 함수 */
 	void DoMove(const float Forward, const float Right);
 
@@ -53,6 +58,12 @@ protected:
 
 	/** Sprint 종료 로직 함수 */
 	void StopSprint();
+
+	/** FlashLight을 켜는 로직 함수 */
+	void DoFlashLight();
+
+	/** FlashLight을 끄는 로직 함수 */
+	void StopFlashLight();
 
 protected:
 	/** 이동 InputAction */
@@ -71,6 +82,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	UInputAction* SprintAction = nullptr;
 
+	/** F 클릭 Action */
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UInputAction* FlashAction = nullptr;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	UCameraComponent* CameraComponent;
@@ -81,10 +96,18 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	UPostProcessEffectComponent* PostProcessEffectComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	USpringArmComponent* SpringArmComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	USpotLightComponent* FlashLight;
+
 private:
 	uint8 bIsEnableMove : 1 = true;
 	uint8 bIsEnableSprint : 1 = true;
 	uint8 bIsEnableInteract : 1 = true;
+	uint8 bIsEnableFlashLight : 1 = true;
+	uint8 bIsFlashLightOn : 1 = false;
 	
 public:
 	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }

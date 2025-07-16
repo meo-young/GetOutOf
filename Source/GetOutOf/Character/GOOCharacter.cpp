@@ -7,8 +7,11 @@
 #include "Component/PostProcessEffectComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/PostProcessComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "Core/GOOPlayerController.h"
+#include "Engine/SpotLight.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "SubSystem/SoundSubSystem.h"
 #include "UI/CrossHairWidget.h"
 #include "UI/PlayerHUDWidget.h"
@@ -35,6 +38,17 @@ AGOOCharacter::AGOOCharacter()
 	CameraComponent->bEnableFirstPersonScale = true;
 	CameraComponent->FirstPersonFieldOfView = 70.0f;
 	CameraComponent->FirstPersonScale = 0.6f;
+
+	// Spring Arm 컴포넌트 생성 및 설정
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+	SpringArmComponent->SetupAttachment(CameraComponent);
+	SpringArmComponent->bEnableCameraLag = true;
+	SpringArmComponent->bEnableCameraRotationLag = true;
+
+	// Spot Light 생성 및 설정
+	FlashLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("FlashLight"));
+	FlashLight->SetupAttachment(SpringArmComponent);
+	
 
 	// Interaction 컴포넌트 생성
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
@@ -80,6 +94,15 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 		{
 			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ThisClass::DoSprint);
 			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ThisClass::StopSprint);
+		}
+		else
+		{
+			LOG(Warning, TEXT("SprintAction이 설정되지 않았습니다"));
+		}
+
+		if (FlashAction)
+		{
+			EnhancedInputComponent->BindAction(FlashAction, ETriggerEvent::Started, this, &ThisClass::FlashLightInput);
 		}
 		else
 		{
@@ -143,6 +166,22 @@ void AGOOCharacter::InteractInput(const FInputActionValue& Value)
 	DoInteract();
 }
 
+void AGOOCharacter::FlashLightInput(const FInputActionValue& Value)
+{
+	if (!bIsEnableFlashLight) return;
+
+	LOG(Warning, TEXT("FlashLightInput 호출됨"));
+
+	if (bIsFlashLightOn)
+	{
+		StopFlashLight();
+	}
+	else
+	{
+		DoFlashLight();
+	}
+}
+
 void AGOOCharacter::DoMove(const float Forward, const float Right)
 {
 	if (GetController())
@@ -182,4 +221,16 @@ void AGOOCharacter::DoSprint()
 void AGOOCharacter::StopSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 150.0f;
+}
+
+void AGOOCharacter::DoFlashLight()
+{
+	bIsFlashLightOn = true;
+	FlashLight->SetVisibility(true);
+}
+
+void AGOOCharacter::StopFlashLight()
+{
+	bIsFlashLightOn = false;
+	FlashLight->SetVisibility(false);
 }
