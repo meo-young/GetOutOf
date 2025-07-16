@@ -19,7 +19,9 @@ public class GetOutOf : ModuleRules
 			"GameplayStateTreeModule",
 			"UMG",
 			"LevelSequence",
-			"MovieScene"
+			"MovieScene",
+			"Slate",
+			"SlateCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

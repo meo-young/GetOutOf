@@ -1,22 +1,13 @@
 #include "SubSystem/StageSubSystem.h"
 #include "GetOutOf.h"
-#include "SoundSubSystem.h"
-#include "Character/Component/PostProcessEffectComponent.h"
-#include "Define/DefineClass.h"
-#include "GameFramework/Character.h"
-
-UStageSubSystem::UStageSubSystem()
-{
-	ConstructorHelpers::FObjectFinder<UDataTable> DT_LevelSequenceDataTable(TEXT("/Game/_GetOutOf/DataTable/DT_LevelSequence"));
-	if (DT_LevelSequenceDataTable.Succeeded())
-	{
-		LevelSequenceDataTable = DT_LevelSequenceDataTable.Object;
-	}
-}
+#include "DataTable/LevelSequenceDataTable.h"
+#include "LevelSequence/GOOLevelSequenceActor.h"
 
 void UStageSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
+	LevelSequenceDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/_GetOutOf/DataTable/DT_LevelSequence.DT_LevelSequence"));
 
 	if (IsValid(LevelSequenceDataTable))
 	{

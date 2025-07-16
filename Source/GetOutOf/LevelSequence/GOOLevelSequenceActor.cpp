@@ -2,10 +2,13 @@
 #include "GetOutOf.h"
 #include "LevelSequence.h"
 #include "LevelSequencePlayer.h"
+#include "Character/GOOCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Character/Component/InteractionComponent.h"
+#include "Core/GOOPlayerController.h"
 #include "Define/DefineClass.h"
 #include "GameFramework/Character.h"
+#include "UI/InventoryWidget.h"
 
 AGOOLevelSequenceActor::AGOOLevelSequenceActor(const FObjectInitializer& Init) :Super(Init)
 {
@@ -39,6 +42,8 @@ void AGOOLevelSequenceActor::PostInitializeComponents()
 void AGOOLevelSequenceActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	LOG(Warning, TEXT("%s BeginPlay"), *GetName());
 
 	UInteractionComponent* InteractionComponent = GetWorld()->GetFirstPlayerController()->GetCharacter()->FindComponentByClass<UInteractionComponent>();
 	InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::DisableCollision);
@@ -83,6 +88,10 @@ void AGOOLevelSequenceActor::Interact_Implementation()
 	{
 		OnInteractionStartDelegate.Broadcast();
 	}
+
+	AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetWorld()->GetFirstPlayerController());
+	UInventoryWidget* InventoryWidget = PlayerController->GetInventoryWidget();
+	InventoryWidget->UnLockSlot( EmotionType, SlotIndex);
 }
 
 void AGOOLevelSequenceActor::DisableCollision()

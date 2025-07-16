@@ -165,6 +165,8 @@ void AGOOCharacter::MoveInput(const FInputActionValue& Value)
 
 void AGOOCharacter::LookInput(const FInputActionValue& Value)
 {
+	if (!bIsEnableLook) return;
+	
 	const FVector2D LookDirection = Value.Get<FVector2D>();
 	DoLook(LookDirection.Y, LookDirection.X);
 }
@@ -265,6 +267,15 @@ void AGOOCharacter::AddInventoryWidget()
 		{
 			if (!InventoryWidget->IsInViewport())
 			{
+				SetEnableFlashLight(false);
+				SetEnableInteract(false);
+				SetEnableMove(false);
+				SetEnableSprint(false);
+				SetEnableLook(false);
+
+				PlayerController->SetInputMode(FInputModeUIOnly());
+				PlayerController->bShowMouseCursor = false;
+				
 				InventoryWidget->AddToViewport();
 				bIsInventoryWidgetOpen = true;	
 			}
@@ -274,15 +285,14 @@ void AGOOCharacter::AddInventoryWidget()
 
 void AGOOCharacter::RemoveInventoryWidget()
 {
-	if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetController()))
-	{
-		if (UInventoryWidget* InventoryWidget = PlayerController->GetInventoryWidget())
-		{
-			if (InventoryWidget->IsInViewport())
-			{
-				InventoryWidget->RemoveFromParent();
-				bIsInventoryWidgetOpen = false;	
-			}
-		}
-	}
+	SetEnableFlashLight(true);
+	SetEnableInteract(true);
+	SetEnableMove(true);
+	SetEnableSprint(true);
+	SetEnableLook(true);
+
+	AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetController());
+	PlayerController->SetInputMode(FInputModeGameOnly());
+
+	bIsInventoryWidgetOpen = false;	
 }

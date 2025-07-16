@@ -31,6 +31,9 @@ public:
 	UFUNCTION()
 	void EnablePlayerInput();
 
+	/** Inventory Widget을 제거하는 로직 함수 */
+	void RemoveInventoryWidget(); 
+
 protected:
 	/** W,A,S,D 입력 처리 함수 */ 
 	void MoveInput(const FInputActionValue& Value);
@@ -71,8 +74,6 @@ protected:
 	/** Inventory Widget을 생성하는 로직 함수 */
 	void AddInventoryWidget();
 
-	/** Inventory Widget을 제거하는 로직 함수 */
-	void RemoveInventoryWidget();
 
 protected:
 	/** 이동 InputAction */
@@ -118,6 +119,7 @@ private:
 private:
 	uint8 bIsEnableMove : 1 = true;
 	uint8 bIsEnableSprint : 1 = true;
+	uint8 bIsEnableLook : 1 = true;
 	uint8 bIsEnableInteract : 1 = true;
 	uint8 bIsEnableFlashLight : 1 = true;
 	uint8 bIsFlashLightOn : 1 = false;
@@ -133,5 +135,6 @@ public:
 	FORCEINLINE void SetEnableInteract(const bool bIsEnable) { bIsEnableInteract = bIsEnable; }
 	FORCEINLINE void SetEnableFlashLight(const bool bIsEnable) { bIsEnableFlashLight = bIsEnable; }
 	FORCEINLINE void SetEnableInventory(const bool bIsEnable) { bIsEnableInventory = bIsEnable; }
+	FORCEINLINE void SetEnableLook(const bool bIsEnable) { bIsEnableLook = bIsEnable; }
 	
 };

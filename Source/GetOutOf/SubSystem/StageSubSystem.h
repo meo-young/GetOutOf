@@ -1,9 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DataTable/LevelSequenceDataTable.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "StageSubSystem.generated.h"
+
+struct FLevelSequenceDataTable;
+class AGOOLevelSequenceActor;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageEnded);
@@ -14,7 +16,6 @@ class GETOUTOF_API UStageSubSystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	UStageSubSystem();
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 public:

@@ -61,6 +61,12 @@ private:
 	void DisableCollision();
 
 private:
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+	uint8 EmotionType = 0;
+
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+	uint8 SlotIndex = 0;
+	
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TObjectPtr<ULevelSequence> LevelSequence = nullptr;
 
