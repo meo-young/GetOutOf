@@ -43,6 +43,9 @@ protected:
 	
 	/** "F"키 입력 처리 함수 */
 	void FlashLightInput(const FInputActionValue& Value);
+
+	/** "Tab"키 입력 처리 함수 */
+	void InventoryInput(const FInputActionValue& Value);
 	
 	/** 이동 로직 담당 함수 */
 	void DoMove(const float Forward, const float Right);
@@ -65,6 +68,12 @@ protected:
 	/** FlashLight을 끄는 로직 함수 */
 	void StopFlashLight();
 
+	/** Inventory Widget을 생성하는 로직 함수 */
+	void AddInventoryWidget();
+
+	/** Inventory Widget을 제거하는 로직 함수 */
+	void RemoveInventoryWidget();
+
 protected:
 	/** 이동 InputAction */
 	UPROPERTY(EditDefaultsOnly, Category="Input")
@@ -85,6 +94,10 @@ protected:
 	/** F 클릭 Action */
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	UInputAction* FlashAction = nullptr;
+
+	/** Tab 클릭 Action */
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UInputAction* InventoryAction = nullptr;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
@@ -108,6 +121,8 @@ private:
 	uint8 bIsEnableInteract : 1 = true;
 	uint8 bIsEnableFlashLight : 1 = true;
 	uint8 bIsFlashLightOn : 1 = false;
+	uint8 bIsEnableInventory : 1 = true;
+	uint8 bIsInventoryWidgetOpen : 1 = false;
 	
 public:
 	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }

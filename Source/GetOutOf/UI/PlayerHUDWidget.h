@@ -4,6 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUDWidget.generated.h"
 
+class UInventoryWidget;
 class UHorrorWidget;
 class UTimerWidget;
 class UCrossHairWidget;

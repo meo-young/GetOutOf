@@ -14,6 +14,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "SubSystem/SoundSubSystem.h"
 #include "UI/CrossHairWidget.h"
+#include "UI/InventoryWidget.h"
 #include "UI/PlayerHUDWidget.h"
 
 AGOOCharacter::AGOOCharacter()
@@ -108,6 +109,15 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 		{
 			LOG(Warning, TEXT("SprintAction이 설정되지 않았습니다"));
 		}
+
+		if (InventoryAction)
+		{
+			EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &ThisClass::InventoryInput);
+		}
+		else
+		{
+			LOG(Warning, TEXT("SprintAction이 설정되지 않았습니다"));
+		}
 	}
 	else
 	{
@@ -169,9 +179,7 @@ void AGOOCharacter::InteractInput(const FInputActionValue& Value)
 void AGOOCharacter::FlashLightInput(const FInputActionValue& Value)
 {
 	if (!bIsEnableFlashLight) return;
-
-	LOG(Warning, TEXT("FlashLightInput 호출됨"));
-
+	
 	if (bIsFlashLightOn)
 	{
 		StopFlashLight();
@@ -179,6 +187,20 @@ void AGOOCharacter::FlashLightInput(const FInputActionValue& Value)
 	else
 	{
 		DoFlashLight();
+	}
+}
+
+void AGOOCharacter::InventoryInput(const FInputActionValue& Value)
+{
+	if (!bIsEnableInventory) return;
+	
+	if (bIsInventoryWidgetOpen)
+	{
+		RemoveInventoryWidget();
+	}
+	else
+	{
+		AddInventoryWidget();
 	}
 }
 
@@ -233,4 +255,34 @@ void AGOOCharacter::StopFlashLight()
 {
 	bIsFlashLightOn = false;
 	FlashLight->SetVisibility(false);
+}
+
+void AGOOCharacter::AddInventoryWidget()
+{
+	if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetController()))
+	{
+		if (UInventoryWidget* InventoryWidget = PlayerController->GetInventoryWidget())
+		{
+			if (!InventoryWidget->IsInViewport())
+			{
+				InventoryWidget->AddToViewport();
+				bIsInventoryWidgetOpen = true;	
+			}
+		}
+	}
+}
+
+void AGOOCharacter::RemoveInventoryWidget()
+{
+	if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetController()))
+	{
+		if (UInventoryWidget* InventoryWidget = PlayerController->GetInventoryWidget())
+		{
+			if (InventoryWidget->IsInViewport())
+			{
+				InventoryWidget->RemoveFromParent();
+				bIsInventoryWidgetOpen = false;	
+			}
+		}
+	}
 }
