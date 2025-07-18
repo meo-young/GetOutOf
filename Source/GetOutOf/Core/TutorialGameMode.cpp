@@ -4,9 +4,9 @@
 #include "Character/GOOCharacter.h"
 #include "Tutorial/TutorialManager.h"
 
-void ATutorialGameMode::StartPlay()
+void ATutorialGameMode::StartTutorial()
 {
-	Super::StartPlay();
+	LOG(Warning, TEXT("StartPlay() 호출됨"));
 
 	for (ATutorialManager* TutorialManager : TActorRange<ATutorialManager>(GetWorld()))
 	{
