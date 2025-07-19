@@ -8,13 +8,12 @@
 #include "Core/GOOPlayerController.h"
 #include "Define/DefineClass.h"
 #include "GameFramework/Character.h"
+#include "SubSystem/StageSubSystem.h"
 #include "UI/InventoryWidget.h"
 
-AGOOLevelSequenceActor::AGOOLevelSequenceActor(const FObjectInitializer& Init) :Super(Init)
+AGOOLevelSequenceActor::AGOOLevelSequenceActor(const FObjectInitializer& Init) : Super(Init)
 {
-	EventTriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Event Trigger Box"));
-	EventTriggerBox->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
-	EventTriggerBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	
 }
 
 void AGOOLevelSequenceActor::PostInitializeComponents()
@@ -34,19 +33,16 @@ void AGOOLevelSequenceActor::PostInitializeComponents()
 	// 재생 전에 레벨 시퀀스 플레이어를 변수화 해야 종료 델리게이트에서 활용할 수 있다.
 	ALevelSequenceActor* OutActor;
 	LevelSequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), LevelSequence, FMovieSceneSequencePlaybackSettings(), OutActor);
-
-	// 종료 델리게이트에 함수를 바인딩한다.
-	LevelSequencePlayer->OnFinished.AddDynamic(this, &ThisClass::OnSequenceEnded);
 }
 
 void AGOOLevelSequenceActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LOG(Warning, TEXT("%s BeginPlay"), *GetName());
+	// 종료 델리게이트에 함수를 바인딩한다.
+	LevelSequencePlayer->OnFinished.AddDynamic(this, &ThisClass::OnSequenceEnded);
 
-	UInteractionComponent* InteractionComponent = GetWorld()->GetFirstPlayerController()->GetCharacter()->FindComponentByClass<UInteractionComponent>();
-	InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::DisableCollision);
+	LOG(Warning, TEXT("%s BeginPlay"), *GetName());
 }
 
 void AGOOLevelSequenceActor::PlayLevelSequence()
@@ -80,21 +76,4 @@ void AGOOLevelSequenceActor::OnSequenceEnded()
 	{
 		OnSequenceEndedDelegate.Broadcast();
 	}
-}
-
-void AGOOLevelSequenceActor::Interact_Implementation()
-{
-	if (OnInteractionStartDelegate.IsBound())
-	{
-		OnInteractionStartDelegate.Broadcast();
-	}
-
-	AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetWorld()->GetFirstPlayerController());
-	UInventoryWidget* InventoryWidget = PlayerController->GetInventoryWidget();
-	InventoryWidget->UnLockSlot( EmotionType, SlotIndex);
-}
-
-void AGOOLevelSequenceActor::DisableCollision()
-{
-	EventTriggerBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

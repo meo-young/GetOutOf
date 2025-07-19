@@ -7,14 +7,13 @@
 
 class UBoxComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSequenceStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSequenceEnded);
 
 class ULevelSequence;
 
 UCLASS()
-class GETOUTOF_API AGOOLevelSequenceActor : public ALevelSequenceActor, public IInteractable
+class GETOUTOF_API AGOOLevelSequenceActor : public ALevelSequenceActor
 {
 	GENERATED_BODY()
 
@@ -24,10 +23,6 @@ public:
 	virtual void BeginPlay() override;
 	
 public:
-	/** LevelSequence에 Interact가 시작될 때 호출되는 델리게이트 */
-	UPROPERTY(BlueprintAssignable)
-	FOnInteractionStart OnInteractionStartDelegate;
-	
 	/** LevelSequence가 시작될 때 호출되는 델리게이트 */
 	UPROPERTY(BlueprintAssignable)
 	FOnSequenceStarted OnSequenceStartedDelegate;
@@ -53,27 +48,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnSequenceEnded();
 
-	/** Interactable 인터페이스의 Interact 함수 구현 */
-	virtual void Interact_Implementation() override;
-
 private:
-	UFUNCTION()
-	void DisableCollision();
-
-private:
-	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-	uint8 EmotionType = 0;
-
-	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-	uint8 SlotIndex = 0;
-	
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TObjectPtr<ULevelSequence> LevelSequence = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	TObjectPtr<ULevelSequencePlayer> LevelSequencePlayer = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = true))
-	UBoxComponent* EventTriggerBox = nullptr;
 	
 };

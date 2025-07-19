@@ -9,6 +9,7 @@
 #include "Components/PostProcessComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Core/GOOPlayerController.h"
+#include "Define/DefineClass.h"
 #include "Engine/SpotLight.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -249,12 +250,22 @@ void AGOOCharacter::StopSprint()
 
 void AGOOCharacter::DoFlashLight()
 {
+	if (USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>())
+	{
+		SoundSubsystem->PlaySFX(ESFX::SwitchOn, GetActorLocation(), FRotator::ZeroRotator);
+	}
+	
 	bIsFlashLightOn = true;
 	FlashLight->SetVisibility(true);
 }
 
 void AGOOCharacter::StopFlashLight()
 {
+	if (USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>())
+	{
+		SoundSubsystem->PlaySFX(ESFX::SwitchOff, GetActorLocation(), FRotator::ZeroRotator);
+	}
+	
 	bIsFlashLightOn = false;
 	FlashLight->SetVisibility(false);
 }

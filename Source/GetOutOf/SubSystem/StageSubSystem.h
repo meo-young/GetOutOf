@@ -4,13 +4,13 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "StageSubSystem.generated.h"
 
-struct FLevelSequenceDataTable;
 class AGOOLevelSequenceActor;
+struct FLevelSequenceDataTable;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageEnded);
 
-UCLASS(Blueprintable)
+UCLASS()
 class GETOUTOF_API UStageSubSystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
@@ -29,24 +29,25 @@ public:
 
 public:
 	/** 스테이지 시작 함수 */
+	UFUNCTION(BlueprintCallable, Category = "Stage")
 	void StartStage();
 
 	/** 스테이지 종료 함수 */
+	UFUNCTION(BlueprintCallable, Category = "Stage")
 	void EndStage();
 
 private:
 	/** 현재 스테이지의 EndLevelSequence를 호출하는 함수 */
 	void ShowEndLevelSequence();
 
-protected:
+private:
 	/** 스테이지별 LevelSequence 데이터 테이블 */
-	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
-	UDataTable* LevelSequenceDataTable;
+	UPROPERTY()
+	TObjectPtr<UDataTable> LevelSequenceDataTable;
 
 	/** 스테이지별 LevelSequence 정보 */
 	TArray<FLevelSequenceDataTable*> LevelSequenceRows;
 
-private:
 	/** 현재 스테이지 번호를 나타내는 변수 */
 	uint8 CurrentStageNum = 0;
 

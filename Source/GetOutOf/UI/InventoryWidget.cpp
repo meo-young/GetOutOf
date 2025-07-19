@@ -132,7 +132,6 @@ void UInventoryWidget::AddSlotWidgetsFromBox(UVerticalBox* Box, uint8 EmotionTyp
 	{
 		if (USlotWidget* SlotWidget = Cast<USlotWidget>(Box->GetChildAt(i)))
 		{
-			LOG(Log, TEXT("SlotWidget %s is added to SlotWidgets array."), *SlotWidget->GetName());
 			EmotionTypes[EmotionType].Slots.Emplace(SlotWidget);
 		}
 	}

@@ -10,7 +10,7 @@ class GETOUTOF_API ARespawnTriggerBox : public ATriggerBox
 	GENERATED_BODY()
 
 public:
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 
 public:
 	UFUNCTION()

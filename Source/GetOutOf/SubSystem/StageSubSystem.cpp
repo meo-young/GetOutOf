@@ -27,11 +27,16 @@ void UStageSubSystem::StartStage()
 		OnStageStartedDelegate.Broadcast();
 	}
 
+	LOG(Warning, TEXT("%d StageNum : %d"), CurrentStageNum, LevelSequenceRows.Num());
+
 	if (LevelSequenceRows.IsValidIndex(CurrentStageNum))
 	{
+		LOG(Warning, TEXT("현재 스테이지 번호: %d"), CurrentStageNum);
 		CurrentStartLSA = GetWorld()->SpawnActor<AGOOLevelSequenceActor>(LevelSequenceRows[CurrentStageNum]->StartLevelSequenceActor);
 		CurrentStartLSA->PlayLevelSequenceForLoop();
 	}
+
+	++CurrentStageNum;
 }
 
 void UStageSubSystem::EndStage()
@@ -41,13 +46,6 @@ void UStageSubSystem::EndStage()
 		LOG(Log, TEXT("스테이지 종료"));
 		OnStageEndedDelegate.Broadcast();
 	}
-
-	if (IsValid(CurrentStartLSA))
-	{
-		CurrentEndLSA->StopLevelSequence();
-	}
-
-	++CurrentStageNum;
 }
 
 void UStageSubSystem::ShowEndLevelSequence()
