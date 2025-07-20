@@ -12,8 +12,5 @@ struct FLevelSequenceDataTable : public FTableRowBase
 public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGOOLevelSequenceActor> StartLevelSequenceActor;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AGOOLevelSequenceActor> EndLevelSequenceActor;
 	
 };

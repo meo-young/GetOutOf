@@ -6,8 +6,8 @@
 void UStageSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	LevelSequenceDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/_GetOutOf/DataTable/DT_LevelSequence.DT_LevelSequence"));
+	
+	LevelSequenceDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/_GetOutOf/DataTable/DT_LevelSequence"));
 
 	if (IsValid(LevelSequenceDataTable))
 	{
@@ -26,14 +26,12 @@ void UStageSubSystem::StartStage()
 		LOG(Log, TEXT("스테이지 시작"));
 		OnStageStartedDelegate.Broadcast();
 	}
-
-	LOG(Warning, TEXT("%d StageNum : %d"), CurrentStageNum, LevelSequenceRows.Num());
-
+	
 	if (LevelSequenceRows.IsValidIndex(CurrentStageNum))
 	{
 		LOG(Warning, TEXT("현재 스테이지 번호: %d"), CurrentStageNum);
 		CurrentStartLSA = GetWorld()->SpawnActor<AGOOLevelSequenceActor>(LevelSequenceRows[CurrentStageNum]->StartLevelSequenceActor);
-		CurrentStartLSA->PlayLevelSequenceForLoop();
+		CurrentStartLSA->PlayLevelSequence();
 	}
 
 	++CurrentStageNum;
@@ -45,19 +43,5 @@ void UStageSubSystem::EndStage()
 	{
 		LOG(Log, TEXT("스테이지 종료"));
 		OnStageEndedDelegate.Broadcast();
-	}
-}
-
-void UStageSubSystem::ShowEndLevelSequence()
-{
-	if (IsValid(CurrentStartLSA))
-	{
-		CurrentStartLSA->StopLevelSequence();
-	}
-	
-	if (LevelSequenceRows.IsValidIndex(CurrentStageNum))
-	{
-		CurrentEndLSA = GetWorld()->SpawnActor<AGOOLevelSequenceActor>(LevelSequenceRows[CurrentStageNum]->EndLevelSequenceActor);
-		CurrentEndLSA->PlayLevelSequence();
 	}
 }

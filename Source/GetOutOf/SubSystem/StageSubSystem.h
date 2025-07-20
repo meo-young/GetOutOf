@@ -37,13 +37,9 @@ public:
 	void EndStage();
 
 private:
-	/** 현재 스테이지의 EndLevelSequence를 호출하는 함수 */
-	void ShowEndLevelSequence();
-
-private:
 	/** 스테이지별 LevelSequence 데이터 테이블 */
 	UPROPERTY()
-	TObjectPtr<UDataTable> LevelSequenceDataTable;
+	TObjectPtr<UDataTable> LevelSequenceDataTable = nullptr;
 
 	/** 스테이지별 LevelSequence 정보 */
 	TArray<FLevelSequenceDataTable*> LevelSequenceRows;

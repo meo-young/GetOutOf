@@ -17,7 +17,7 @@ enum class ESFX : uint8
 	CameraBeep = 4,
 	CameraFlash = 5,
 	SwitchOn = 6,
-	SwitchOff = 7,
+	SwitchOff = 7
 };
 
 UENUM(BlueprintType)

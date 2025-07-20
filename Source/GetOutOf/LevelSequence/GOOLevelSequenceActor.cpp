@@ -47,6 +47,7 @@ void AGOOLevelSequenceActor::BeginPlay()
 
 void AGOOLevelSequenceActor::PlayLevelSequence()
 {
+	LOG(Warning, TEXT("%s PlayLevelSequence"), *GetName());
 	if (OnSequenceStartedDelegate.IsBound())
 	{
 		OnSequenceStartedDelegate.Broadcast();

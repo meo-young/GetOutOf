@@ -30,6 +30,9 @@ private:
 	UFUNCTION()
 	void DisableCollision();
 
+	UFUNCTION()
+	void DestroyItem();
+	
 private:
 	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true), Category ="Inventory")
 	uint8 EmotionType = 0;
@@ -39,4 +42,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = true))
 	UBoxComponent* EventTriggerBox = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = true))
+	USceneComponent* SceneComponent = nullptr;
 };
