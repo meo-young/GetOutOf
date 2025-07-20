@@ -4,8 +4,10 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "SoundSubSystem.generated.h"
 
+struct FVoiceDataTable;
 struct FSFXDataTable;
 struct FBGMDataTable;
+enum class EVoiceType : uint8;
 enum class ESFX : uint8;
 enum class EBGM : uint8;
 
@@ -19,6 +21,10 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 public:
+	/** PlayAtLocation으로 사운드를 재생한다. */
+	UFUNCTION(BlueprintCallable)
+	void PlayVoiceSFX(EVoiceType SFX, const FVector& InLocation);
+	
 	/** PlayAtLocation으로 사운드를 재생한다. */
 	void PlaySFX(ESFX SFX, const FVector& InLocation, const FRotator& InRotator);
 
@@ -42,6 +48,13 @@ private:
 
 	/** BGM 데이터 테이블에서 추출한 모든 행 */
 	TArray<FBGMDataTable*> BGMDataRows;
+
+	/** Voice 데이터 테이블 */
+	UPROPERTY()
+	TObjectPtr<UDataTable> VoiceDataTable;
+
+	/** Voice 데이터 테이블에서 추출한 모든 행 */
+	TArray<FVoiceDataTable*> VoiceDataRows;
 
 	UPROPERTY()
 	UAudioComponent* CurrentBGMAudioComponent;

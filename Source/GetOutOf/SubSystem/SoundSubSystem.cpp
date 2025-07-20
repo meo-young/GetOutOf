@@ -1,12 +1,16 @@
 #include "SubSystem/SoundSubSystem.h"
 #include "GetOutOf.h"
 #include "StageSubSystem.h"
+#include "Character/GOOCharacter.h"
 #include "Components/AudioComponent.h"
+#include "Core/GOOPlayerController.h"
 #include "DataTable/BGMDataTable.h"
 #include "DataTable/SFXDataTable.h"
+#include "DataTable/VoiceDataTable.h"
 #include "Define/DefineClass.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
+#include "UI/DialogueWidget.h"
 
 USoundSubSystem::USoundSubSystem()
 {
@@ -21,6 +25,12 @@ USoundSubSystem::USoundSubSystem()
 	{
 		BGMDataTable = DT_BGM.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> DT_Voice(TEXT("/Game/_GetOutOf/DataTable/DT_Voice"));
+	if (DT_Voice.Succeeded())
+	{
+		VoiceDataTable = DT_Voice.Object;
+	}
 }
 
 void USoundSubSystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -30,6 +40,40 @@ void USoundSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 	// DataTable의 모든 데이터를 추출한다.
 	SFXDataTable->GetAllRows<FSFXDataTable>(TEXT(""), SFXDataRows);
 	BGMDataTable->GetAllRows<FBGMDataTable>(TEXT(""), BGMDataRows);
+	VoiceDataTable->GetAllRows<FVoiceDataTable>(TEXT(""), VoiceDataRows);
+}
+
+void USoundSubSystem::PlayVoiceSFX(EVoiceType SFX, const FVector& InLocation)
+{
+	if (VoiceDataRows.Num() <= 0)
+	{
+		LOG(Error, TEXT("Voice Data Table이 유효하지 않습니다."));
+		return;
+	}
+
+	USoundCue* SoundCue = VoiceDataRows[static_cast<int32>(SFX)]->Voice;
+	if (!IsValid(SoundCue))
+	{
+		LOG(Error, TEXT("Voice Data Table에 정의된 SoundCue가 유효하지 않습니다."));
+		return;
+	}
+
+	FText* DialogueText = &VoiceDataRows[static_cast<int32>(SFX)]->DialogueText;
+	if (DialogueText->IsEmpty())
+	{
+		LOG(Error, TEXT("Voice Data Table에 정의된 DialogueText가 비어있습니다."));
+		return;
+	}
+
+	if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetWorld()->GetFirstPlayerController()))
+	{
+		if (UDialogueWidget* DialogueWidget = PlayerController->GetDialogueWidget())
+		{
+			DialogueWidget->SetDialogueText(DialogueText->ToString());
+		}
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SoundCue, InLocation, FRotator::ZeroRotator);
 }
 
 void USoundSubSystem::PlaySFX(ESFX SFX, const FVector& InLocation, const FRotator& InRotator)

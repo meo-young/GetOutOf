@@ -25,3 +25,12 @@ enum class EBGM : uint8
 {
 	HorrorBGM = 0,
 };
+
+UENUM(BlueprintType)
+enum class EVoiceType : uint8
+{
+	PlayABit = 0,
+	WTF = 1,
+	MusicBox = 2,
+	Donald = 3
+};
