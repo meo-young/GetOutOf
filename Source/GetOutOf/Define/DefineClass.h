@@ -32,5 +32,7 @@ enum class EVoiceType : uint8
 	PlayABit = 0,
 	WTF = 1,
 	MusicBox = 2,
-	Donald = 3
+	Donald = 3,
+	Jesus = 4,
+	SameThing = 5
 };

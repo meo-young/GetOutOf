@@ -14,6 +14,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SubSystem/SoundSubSystem.h"
+#include "SubSystem/StageSubSystem.h"
 #include "UI/CrossHairWidget.h"
 #include "UI/InventoryWidget.h"
 #include "UI/PlayerHUDWidget.h"
@@ -143,6 +144,11 @@ void AGOOCharacter::BeginPlay()
 			}
 		}	
 	}
+
+	if (UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>())
+	{
+		StageSubsystem->OnStageStartedDelegate.AddDynamic(this, &ThisClass::AGOOCharacter::StopFlashLightWithoutSound);
+	}
 }
 
 void AGOOCharacter::DisablePlayerInput()
@@ -266,6 +272,12 @@ void AGOOCharacter::StopFlashLight()
 		SoundSubsystem->PlaySFX(ESFX::SwitchOff, GetActorLocation(), FRotator::ZeroRotator);
 	}
 	
+	bIsFlashLightOn = false;
+	FlashLight->SetVisibility(false);
+}
+
+void AGOOCharacter::StopFlashLightWithoutSound()
+{
 	bIsFlashLightOn = false;
 	FlashLight->SetVisibility(false);
 }

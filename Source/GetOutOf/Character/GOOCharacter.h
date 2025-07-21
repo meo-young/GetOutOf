@@ -25,10 +25,10 @@ public:
 	virtual void BeginPlay() override;
 
 public:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void DisablePlayerInput();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void EnablePlayerInput();
 
 	/** Inventory Widget을 제거하는 로직 함수 */
@@ -74,6 +74,9 @@ protected:
 	/** Inventory Widget을 생성하는 로직 함수 */
 	void AddInventoryWidget();
 
+	/** 사운드 없이 후레쉬를 비활성화 하는 함수 */
+	UFUNCTION()
+	void StopFlashLightWithoutSound();
 
 protected:
 	/** 이동 InputAction */

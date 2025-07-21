@@ -5,6 +5,7 @@
 #include "Character/GOOCharacter.h"
 #include "Components/ShapeComponent.h"
 #include "GameFramework/PlayerStart.h"
+#include "LevelSequence/GOOLevelSequenceActor.h"
 #include "SubSystem/StageSubSystem.h"
 
 void ARespawnTriggerBox::BeginPlay()
@@ -22,18 +23,37 @@ void ARespawnTriggerBox::OnActorBeginOverlap(UPrimitiveComponent* OverlappedComp
 	{
 		if (AGOOCharacter* Player = Cast<AGOOCharacter>(OtherActor))
 		{
-			LOG(Warning, TEXT("플레이어 충돌"));
-			for (APlayerStart* PlayerStart : TActorRange<APlayerStart>(GetWorld()))
+			GetWorldTimerManager().SetTimer(TriggerBoxTimerHandle, this, &ThisClass::EndStage, 1.0f, false);
+			
+			GetWorldTimerManager().SetTimer(RespawnTimerHandle, FTimerDelegate::CreateLambda([this, Player]()
 			{
-				if (PlayerStart)
-				{
-					Player->SetActorTransform(PlayerStart->GetActorTransform());
-					Player->GetController()->SetControlRotation(FRotator::ZeroRotator);
-
-					UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>();
-					StageSubsystem->StartStage();
-				}
-			}
+				RespawnPlayer(Player);
+			}), 5.0f, false);
 		}
+	}
+}
+
+void ARespawnTriggerBox::RespawnPlayer(AGOOCharacter* Player)
+{
+	if (!IsValid(Player)) return;
+	
+	for (APlayerStart* PlayerStart : TActorRange<APlayerStart>(GetWorld()))
+	{
+		if (PlayerStart)
+		{
+			Player->SetActorTransform(PlayerStart->GetActorTransform());
+			Player->GetController()->SetControlRotation(FRotator::ZeroRotator);
+
+			UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>();
+			StageSubsystem->StartStage();
+		}
+	}
+}
+
+void ARespawnTriggerBox::EndStage()
+{
+	if (UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>())
+	{
+		StageSubsystem->EndStage();
 	}
 }

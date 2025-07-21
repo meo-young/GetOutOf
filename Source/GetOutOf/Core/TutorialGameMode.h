@@ -13,5 +13,12 @@ public:
 	/** 튜토리얼을 시작하는 함수 */
 	UFUNCTION(BlueprintCallable)
 	void StartTutorial();
+
+	/** ImperfecterActor를 변수화 하는 함수 */
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void GetImperfecterActors();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetHorrorEffects(bool bEnable);
 	
 };

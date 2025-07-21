@@ -8,6 +8,7 @@
 class UBoxComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionStart);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEventStart);
 
 UCLASS()
 class GETOUTOF_API AInteractableItem : public AActor, public IInteractable
@@ -22,6 +23,10 @@ public:
 	/** LevelSequence에 Interact가 시작될 때 호출되는 델리게이트 */
 	UPROPERTY(BlueprintAssignable)
 	FOnInteractionStart OnInteractionStartDelegate;
+
+	/** 이벤트 조건이 만족될 때 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
+	FOnEventStart OnEventStartDelegate;
 	
 	/** Interactable 인터페이스의 Interact 함수 구현 */
 	virtual void Interact_Implementation() override;
