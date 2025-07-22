@@ -39,8 +39,11 @@ void AGOOLevelSequenceActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 종료 델리게이트에 함수를 바인딩한다.
-	LevelSequencePlayer->OnFinished.AddDynamic(this, &ThisClass::OnSequenceEnded);
+	if (IsValid(LevelSequencePlayer))
+	{
+		// 종료 델리게이트에 함수를 바인딩한다.
+		LevelSequencePlayer->OnFinished.AddDynamic(this, &ThisClass::OnSequenceEnded);	
+	}
 }
 
 void AGOOLevelSequenceActor::PlayLevelSequence()

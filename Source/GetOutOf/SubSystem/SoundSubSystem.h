@@ -29,9 +29,11 @@ public:
 	void PlaySFX(ESFX SFX, const FVector& InLocation, const FRotator& InRotator);
 
 	/** Loop로 BGM을 재생한다. */
+	UFUNCTION(BlueprintCallable)
 	void PlayBGM(EBGM BGM);
 
 	/** 현재 재생중인 BGM을 중단한다. */
+	UFUNCTION(BlueprintCallable)
 	void StopBGM();
 
 private:

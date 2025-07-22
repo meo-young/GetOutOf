@@ -24,6 +24,7 @@ UENUM(BlueprintType)
 enum class EBGM : uint8
 {
 	HorrorBGM = 0,
+	LightHorrorBGM = 1
 };
 
 UENUM(BlueprintType)
