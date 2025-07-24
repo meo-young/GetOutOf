@@ -28,6 +28,9 @@ public:
 	/** PlayAtLocation으로 사운드를 재생한다. */
 	void PlaySFX(ESFX SFX, const FVector& InLocation, const FRotator& InRotator);
 
+	/** Play2D로 사운드를 재생한다. */
+	void PlaySFX2D(ESFX SFX);
+
 	/** Loop로 BGM을 재생한다. */
 	UFUNCTION(BlueprintCallable)
 	void PlayBGM(EBGM BGM);

@@ -297,10 +297,15 @@ void AGOOCharacter::AddInventoryWidget()
 				SetEnableLook(false);
 
 				PlayerController->SetInputMode(FInputModeUIOnly());
-				PlayerController->bShowMouseCursor = false;
+				PlayerController->SetShowMouseCursor(false);
 				
 				InventoryWidget->AddToViewport();
-				bIsInventoryWidgetOpen = true;	
+				bIsInventoryWidgetOpen = true;
+
+				if (USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>())
+				{
+					SoundSubsystem->PlaySFX2D(ESFX::DiaryOpen);
+				}
 			}
 		}
 	}

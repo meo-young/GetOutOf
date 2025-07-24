@@ -17,5 +17,18 @@ public:
 	void OnActorBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 							UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 							bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OpenNextLevel();
+
+	UFUNCTION()
+	void EndStage();
+
+private:
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	FString NextLevelName;
+
+	FTimerHandle OpenNextLevelTimerHandle;
+	FTimerHandle EndStageTimerHandle;
 	
 };

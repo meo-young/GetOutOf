@@ -100,6 +100,27 @@ void USoundSubSystem::PlaySFX(ESFX SFX, const FVector& InLocation, const FRotato
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SoundCue, InLocation, InRotator, VolumeMultiplier, 1.0f, 0.0f);
 }
 
+void USoundSubSystem::PlaySFX2D(ESFX SFX)
+{
+	// SFXDataRows가 유효한지 확인한다.
+	if (SFXDataRows.Num() <= 0)
+	{
+		LOG(Error, TEXT("SFX Data Table이 유효하지 않습니다."));
+		return;
+	}
+
+	// SFX Enum에 해당하는 사운드를 가져온다.
+	USoundCue* SoundCue = SFXDataRows[static_cast<int32>(SFX)]->SoundCue;
+	if (!IsValid(SoundCue))
+	{
+		LOG(Error, TEXT("SFX Data Table에 정의된 SoundCue가 유효하지 않습니다."));
+		return;
+	}
+	
+	// UGameplayStatics를 사용하여 2D 사운드 재생
+	UGameplayStatics::PlaySound2D(GetWorld(), SoundCue);
+}
+
 void USoundSubSystem::PlayBGM(EBGM BGM)
 {
 	if (BGMDataRows.Num() <= 0)
@@ -115,8 +136,6 @@ void USoundSubSystem::PlayBGM(EBGM BGM)
 		LOG(Error, TEXT("BGM Data Table에 정의된 SoundCue가 유효하지 않습니다."));
 		return;
 	}
-
-	LOG(Warning, TEXT("BGM 재생"));
 	
 	// 기존 BGM 정지
 	if (CurrentBGMAudioComponent && CurrentBGMAudioComponent->IsPlaying())
