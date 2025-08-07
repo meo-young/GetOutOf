@@ -17,6 +17,8 @@ void UStageSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 	{
 		LOG(Error, TEXT("LevelSequenceDataTable이 유효하지 않습니다"));
 	}
+	
+	CurrentStageNum = 3;
 }
 
 void UStageSubSystem::StartStage()
@@ -37,6 +39,14 @@ void UStageSubSystem::StartStage()
 	++CurrentStageNum;
 }
 
+void UStageSubSystem::ClearStage()
+{
+	if (OnStageClearedDelegate.IsBound())
+	{
+		OnStageClearedDelegate.Broadcast();
+	}
+}
+
 void UStageSubSystem::EndStage()
 {
 	if (OnStageEndedDelegate.IsBound())
@@ -45,3 +55,4 @@ void UStageSubSystem::EndStage()
 		OnStageEndedDelegate.Broadcast();
 	}
 }
+

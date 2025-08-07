@@ -38,11 +38,15 @@ public:
 	/** 마우스 클릭 시 호출되는 상호작용 시작 로직 함수 */
 	void StartInteraction();
 
+	/** E 클릭 시 호출되는 상호작용 시작 로직 함수 */
+	void DoorInteraction();
+
 	/** 상호작용 시작 로직 함수가 불린 후 1.5초 후 호출되는 상호작용 종료 로직 함수  */
 	void EndInteraction();
 
 private:
 	FHitResult InteractionHitResult;
+	FHitResult DoorHitResult;
 	FCollisionQueryParams QueryParams;
 	FTimerHandle CameraTimerHandle;
 	

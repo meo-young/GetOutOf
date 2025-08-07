@@ -31,13 +31,21 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 	const FVector CurrentLocation = CameraComponent->GetComponentLocation();
 	const FVector ForwardVector = CameraComponent->GetForwardVector();
-	const FVector TargetLocation = CurrentLocation + (ForwardVector * 250.0f);
+	const FVector TargetLocation = CurrentLocation + (ForwardVector * 300.0f);
 	
 	const bool bHit = GetWorld()->LineTraceSingleByChannel(
 		InteractionHitResult,
 		CurrentLocation,
 		TargetLocation,
 		ECC_INTERACTION,
+		QueryParams
+		);
+
+	const bool bDHit = GetWorld()->LineTraceSingleByChannel(
+		DoorHitResult,
+		CurrentLocation,
+		TargetLocation,
+		ECC_DOOR,
 		QueryParams
 		);
 
@@ -71,13 +79,26 @@ void UInteractionComponent::StartInteraction()
 	SoundSubSystem->PlaySFX(ESFX::CameraBeep, GetOwner()->GetActorLocation(), FRotator::ZeroRotator);
 
 	// 상호작용 시작 델리게이트 호출
-	if (OnInteractionPossibleDelegate.IsBound())
+	if (OnInteractionStartedDelegate.IsBound())
 	{
+		LOG2(TEXT("호출"));
 		OnInteractionStartedDelegate.Broadcast();
 	}
 
 	// 카메라 플래시 효과 출력 및 일지 기록
 	GetOwner()->GetWorldTimerManager().SetTimer(CameraTimerHandle, this, &ThisClass::EndInteraction, 1.5f, false);
+}
+
+void UInteractionComponent::DoorInteraction()
+{
+	// 상호작용 오브젝트 캐스팅
+	InteractableObject = Cast<IInteractable>(DoorHitResult.GetActor());
+
+	// 상호작용 오브젝트가 유효하다면 상호작용 함수 호출
+	if (InteractableObject)
+	{
+		IInteractable::Execute_Interact(InteractableObject->_getUObject());
+	}
 }
 
 void UInteractionComponent::EndInteraction()

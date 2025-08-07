@@ -49,7 +49,7 @@ void ATutorialManager::BeginPlay()
 	TutorialEventList.Emplace(WASDTutorial);
 	TutorialEventList.Emplace(SprintTutorial);
 	TutorialEventList.Emplace(PictureTutorial);
-	TutorialEventList.Emplace(InventoryTutorial);
+	//TutorialEventList.Emplace(InventoryTutorial);
 	TutorialEventList.Emplace(FlashTutorial);
 }
 

@@ -50,6 +50,8 @@ protected:
 public:
 	FORCEINLINE UPlayerHUDWidget* GetPlayerHUDWidget() const { return PlayerHUDWidgetInstance; }
 	FORCEINLINE UInventoryWidget* GetInventoryWidget() const { return InventoryWidgetInstance; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UDialogueWidget* GetDialogueWidget() const { return DialogueWidgetInstance; }
 
 };

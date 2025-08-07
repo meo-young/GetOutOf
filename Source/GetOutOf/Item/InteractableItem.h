@@ -38,7 +38,7 @@ private:
 	UFUNCTION()
 	void DestroyItem();
 	
-private:
+protected:
 	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true), Category ="Inventory")
 	uint8 EmotionType = 0;
 

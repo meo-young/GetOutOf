@@ -43,13 +43,13 @@ void AInteractableItem::Interact_Implementation()
 		OnInteractionStartDelegate.Broadcast();
 	}
 
-	if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetWorld()->GetFirstPlayerController()))
+	/*if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetWorld()->GetFirstPlayerController()))
 	{
 		if (UInventoryWidget* InventoryWidget = PlayerController->GetInventoryWidget())
 		{
 			InventoryWidget->UnLockSlot( EmotionType, SlotIndex);
 		}
-	}
+	}*/
 }
 
 void AInteractableItem::DisableCollision()

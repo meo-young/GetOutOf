@@ -24,7 +24,7 @@ public:
 
 
 private:
-	void RespawnPlayer(AGOOCharacter* Player);
+	void RespawnPlayer();
 	void EndStage();
 
 private:

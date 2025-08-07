@@ -31,6 +31,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EnablePlayerInput();
 
+	void SetDeadMode();
+	void SetNormalMode();
+
 	/** Inventory Widget을 제거하는 로직 함수 */
 	void RemoveInventoryWidget(); 
 
@@ -71,6 +74,9 @@ protected:
 	/** FlashLight을 끄는 로직 함수 */
 	void StopFlashLight();
 
+	/** 문을 여는 함수 */
+	void OpenDoor();
+
 	/** Inventory Widget을 생성하는 로직 함수 */
 	void AddInventoryWidget();
 
@@ -103,21 +109,25 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	UInputAction* InventoryAction = nullptr;
 
-private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
-	UCameraComponent* CameraComponent;
+	/** E 클릭 Action */
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UInputAction* DoorAction = nullptr;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UCameraComponent> CameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
-	UInteractionComponent* InteractionComponent;
+	TObjectPtr<UInteractionComponent> InteractionComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
-	UPostProcessEffectComponent* PostProcessEffectComponent;
+	TObjectPtr<UPostProcessEffectComponent> PostProcessEffectComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
-	USpringArmComponent* SpringArmComponent;
+	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
-	USpotLightComponent* FlashLight;
+	TObjectPtr<USpotLightComponent> FlashLight;
 
 private:
 	uint8 bIsEnableMove : 1 = true;
@@ -130,6 +140,7 @@ private:
 	uint8 bIsInventoryWidgetOpen : 1 = false;
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }
 	FORCEINLINE UInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 

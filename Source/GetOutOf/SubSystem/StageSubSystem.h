@@ -8,6 +8,7 @@ class AGOOLevelSequenceActor;
 struct FLevelSequenceDataTable;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageStarted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageCleared);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageEnded);
 
 UCLASS()
@@ -23,6 +24,10 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnStageStarted OnStageStartedDelegate;
 
+	/** 스테이지 이벤트를 모두 클리어시 호출되는 델리게이트 */
+	UPROPERTY(BlueprintAssignable)
+	FOnStageCleared OnStageClearedDelegate;
+
 	/** 스테이지 종료 시 호출되는 델리게이트 */
 	UPROPERTY(BlueprintAssignable)
 	FOnStageEnded OnStageEndedDelegate;
@@ -32,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Stage")
 	void StartStage();
 
+	/** 스테이지 클리어 했을 때 호출하는 함수 */
+	UFUNCTION(BlueprintCallable, Category = "Stage")
+	void ClearStage();
+	
 	/** 스테이지 종료 함수 */
 	UFUNCTION(BlueprintCallable, Category = "Stage")
 	void EndStage();

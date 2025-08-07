@@ -15,6 +15,7 @@ public:
 	virtual void NativeOnInitialized() override;
 
 public:
+	UFUNCTION(BlueprintCallable)
 	void SetDialogueText(const FString& InDialogueText);
 
 private:

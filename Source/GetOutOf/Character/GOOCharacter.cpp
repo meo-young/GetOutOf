@@ -109,17 +109,26 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 		}
 		else
 		{
-			LOG(Warning, TEXT("SprintAction이 설정되지 않았습니다"));
+			LOG(Warning, TEXT("FlashAction이 설정되지 않았습니다"));
 		}
 
-		if (InventoryAction)
+		if (DoorAction)
+		{
+			EnhancedInputComponent->BindAction(DoorAction, ETriggerEvent::Started, this, &ThisClass::OpenDoor);
+		}
+		else
+		{
+			LOG(Warning, TEXT("DoorAction이 설정되지 않았습니다"));
+		}
+
+		/*if (InventoryAction)
 		{
 			EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &ThisClass::InventoryInput);
 		}
 		else
 		{
 			LOG(Warning, TEXT("SprintAction이 설정되지 않았습니다"));
-		}
+		}*/
 	}
 	else
 	{
@@ -135,13 +144,8 @@ void AGOOCharacter::BeginPlay()
 	{
 		if (IsValid(InteractionComponent))
 		{
-			if (UCrossHairWidget* CrossHairWidget = PlayerController->GetPlayerHUDWidget()->GetCrossHairWidget())
-			{
-				InteractionComponent->OnInteractionPossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToRed);
-				InteractionComponent->OnInteractionImpossibleDelegate.AddUObject(CrossHairWidget, &UCrossHairWidget::SetCrossHairImageToWhite);
-				InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
-				InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::EnablePlayerInput);
-			}
+			InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
+			InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::EnablePlayerInput);
 		}	
 	}
 
@@ -160,6 +164,38 @@ void AGOOCharacter::DisablePlayerInput()
 void AGOOCharacter::EnablePlayerInput()
 {
 	EnableInput(Cast<APlayerController>(GetController()));
+}
+
+void AGOOCharacter::SetDeadMode()
+{
+	// 플레이어의 입력과 애니메이션을 비활성화하고 RagDoll을 활성화 합니다.
+	DisablePlayerInput();
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->GetAnimInstance()->EnableUpdateAnimation(false);
+
+	// 카메라의 기본 설정들을 비활성화 합니다.
+	CameraComponent->bUsePawnControlRotation = false;
+	bUseControllerRotationPitch = true;
+	bUseControllerRotationRoll = true;
+
+	// 사망 사운드를 재생합니다.
+	/*FTimerHandle DeadSoundHandle;
+	GetWorld()->GetTimerManager().SetTimer(DeadSoundHandle, FTimerDelegate::CreateLambda([this]()
+	{
+		USoundSubSystem* SoundSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<USoundSubSystem>();
+		SoundSubsystem->PlaySFX(ESFX::BodyFall, GetActorLocation() + FVector(0.0f, 0.0f, 10.0f));
+	}), 0.5f, false);*/
+
+	// 2초 후 RagDoll을 비활성화 합니다.
+	FTimerHandle SimulatedPhysicsHandle;
+	GetWorld()->GetTimerManager().SetTimer(SimulatedPhysicsHandle, FTimerDelegate::CreateLambda([this]()
+	{
+		CameraComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	}), 2.0f, false);
+}
+
+void AGOOCharacter::SetNormalMode()
+{
 }
 
 void AGOOCharacter::MoveInput(const FInputActionValue& Value)
@@ -274,6 +310,17 @@ void AGOOCharacter::StopFlashLight()
 	
 	bIsFlashLightOn = false;
 	FlashLight->SetVisibility(false);
+}
+
+void AGOOCharacter::OpenDoor()
+{
+	if (!IsValid(InteractionComponent))
+	{
+		LOG(Warning, TEXT("InteractionComponent가 유효하지 않습니다"));
+		return;
+	}
+	
+	InteractionComponent->DoorInteraction();
 }
 
 void AGOOCharacter::StopFlashLightWithoutSound()

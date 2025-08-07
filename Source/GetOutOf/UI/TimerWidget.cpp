@@ -7,13 +7,6 @@
 void UTimerWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
-
-	UStageSubSystem* StageSubSystem = GetGameInstance()->GetSubsystem<UStageSubSystem>();
-	if (!IsValid(StageSubSystem)) return;
-
-	LOG(Log, TEXT("TimerWidget 델리게이트 바인딩 성공"));
-	StageSubSystem->OnStageStartedDelegate.AddDynamic(this, &ThisClass::ActivateTimerText);
-	StageSubSystem->OnStageEndedDelegate.AddDynamic(this, &ThisClass::ResetTimerText);
 }
 
 void UTimerWidget::ActivateTimerText()

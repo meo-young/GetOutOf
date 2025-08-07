@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Character/GOOCharacter.h"
 #include "Components/ShapeComponent.h"
+#include "Core/GOOGameModeBase.h"
 #include "GameFramework/PlayerStart.h"
 #include "LevelSequence/GOOLevelSequenceActor.h"
 #include "SubSystem/StageSubSystem.h"
@@ -25,19 +26,19 @@ void ARespawnTriggerBox::OnActorBeginOverlap(UPrimitiveComponent* OverlappedComp
 		{
 			GetWorldTimerManager().SetTimer(TriggerBoxTimerHandle, this, &ThisClass::EndStage, 1.0f, false);
 			
-			GetWorldTimerManager().SetTimer(RespawnTimerHandle, FTimerDelegate::CreateLambda([this, Player]()
-			{
-				RespawnPlayer(Player);
-			}), 5.0f, false);
+			GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &ThisClass::RespawnPlayer, 5.0f, false);
 		}
 	}
 }
 
-void ARespawnTriggerBox::RespawnPlayer(AGOOCharacter* Player)
+void ARespawnTriggerBox::RespawnPlayer()
 {
-	if (!IsValid(Player)) return;
+	Cast<AGOOGameModeBase>(GetWorld()->GetAuthGameMode())->ReStart();
 	
-	for (APlayerStart* PlayerStart : TActorRange<APlayerStart>(GetWorld()))
+	UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>();
+	StageSubsystem->StartStage();
+	
+	/*for (APlayerStart* PlayerStart : TActorRange<APlayerStart>(GetWorld()))
 	{
 		if (PlayerStart)
 		{
@@ -47,7 +48,7 @@ void ARespawnTriggerBox::RespawnPlayer(AGOOCharacter* Player)
 			UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>();
 			StageSubsystem->StartStage();
 		}
-	}
+	}*/
 }
 
 void ARespawnTriggerBox::EndStage()

@@ -16,17 +16,9 @@ class GETOUTOF_API UPlayerHUDWidget : public UUserWidget
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	UCrossHairWidget* CrossHairWidget;
-
-	UPROPERTY(meta = (BindWidget))
-	UTimerWidget* TimerWidget;
-
-	UPROPERTY(meta = (BindWidget))
 	UHorrorWidget* HorrorWidget;
 
 public:
-	FORCEINLINE UCrossHairWidget* GetCrossHairWidget() const { return CrossHairWidget; }
-	FORCEINLINE UTimerWidget* GetTimerWidget() const { return TimerWidget; }
 	FORCEINLINE UHorrorWidget* GetHorrorWidget() const { return HorrorWidget; }
 	
 };

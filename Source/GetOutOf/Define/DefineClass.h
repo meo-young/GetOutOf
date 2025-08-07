@@ -6,6 +6,7 @@
 #define SURFACE_DIRT		SurfaceType4
 
 #define ECC_INTERACTION		ECC_GameTraceChannel2
+#define ECC_DOOR			ECC_GameTraceChannel3
 
 UENUM(BlueprintType)
 enum class ESFX : uint8
@@ -18,7 +19,9 @@ enum class ESFX : uint8
 	CameraFlash = 5,
 	SwitchOn = 6,
 	SwitchOff = 7,
-	DiaryOpen = 8
+	DiaryOpen = 8,
+	Mannequin_FootStep = 9,
+	UnlockDoor = 10
 };
 
 UENUM(BlueprintType)
@@ -36,5 +39,6 @@ enum class EVoiceType : uint8
 	MusicBox = 2,
 	Donald = 3,
 	Jesus = 4,
-	SameThing = 5
+	SameThing = 5,
+	WhereAreYou = 6
 };
