@@ -41,6 +41,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UBoxComponent* BoxComponent;
 
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Components")
+	FName NextStageName;
+
 private:
 	FTimerHandle StartStageTimer;
 	FTimerHandle EndStageTimer;

@@ -4,6 +4,7 @@
 #include "Components/BoxComponent.h"
 #include "Core/GOOGameModeBase.h"
 #include "Define/DefineClass.h"
+#include "Kismet/GameplayStatics.h"
 #include "SubSystem/SoundSubSystem.h"
 #include "Subsystem/StageSubSystem.h"
 
@@ -62,9 +63,21 @@ void ADoor::Interact_Implementation()
 	AGOOGameModeBase* GameMode = Cast<AGOOGameModeBase>(GetWorld()->GetAuthGameMode());
 
 	// 타이머 활성화
+	const uint8 CurrentStageNum = StageSubsystem->GetCurrentStageNum();
+	if (CurrentStageNum == 3 || CurrentStageNum == 6)
+	{
+		GetWorldTimerManager().SetTimer(RestartTimer, FTimerDelegate::CreateLambda([this]
+		{
+			UGameplayStatics::OpenLevel(GetWorld(), NextStageName);
+		}), 6.5f, false);
+		
+		}
+	else
+	{
+		GetWorldTimerManager().SetTimer(RestartTimer, GameMode, &AGOOGameModeBase::ReStart, 6.5f, false);
+		GetWorldTimerManager().SetTimer(StartStageTimer, StageSubsystem, &UStageSubSystem::StartStage, 7.0f, false);
+	}
 	GetWorldTimerManager().SetTimer(EndStageTimer, StageSubsystem, &UStageSubSystem::EndStage, 3.0f, false);
-	GetWorldTimerManager().SetTimer(RestartTimer, GameMode, &AGOOGameModeBase::ReStart, 6.5f, false);
-	GetWorldTimerManager().SetTimer(StartStageTimer, StageSubsystem, &UStageSubSystem::StartStage, 7.0f, false);
 }
 
 

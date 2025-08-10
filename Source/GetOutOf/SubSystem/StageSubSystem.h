@@ -63,5 +63,9 @@ private:
 	/** 현재 EndLevelSequence에 대한 캐싱 데이터 */
 	UPROPERTY()
 	AGOOLevelSequenceActor* CurrentEndLSA;
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Stage")
+	FORCEINLINE uint8 GetCurrentStageNum() { return CurrentStageNum; }
 	
 };

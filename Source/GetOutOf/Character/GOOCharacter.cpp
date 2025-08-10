@@ -139,15 +139,14 @@ void AGOOCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 void AGOOCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	LOG2(TEXT("BeginPlay"));
 	
-	if (AGOOPlayerController* PlayerController = Cast<AGOOPlayerController>(GetController()))
+	if (IsValid(InteractionComponent))
 	{
-		if (IsValid(InteractionComponent))
-		{
-			InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
-			InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::EnablePlayerInput);
-		}	
-	}
+		InteractionComponent->OnInteractionStartedDelegate.AddUObject(this, &ThisClass::DisablePlayerInput);
+		InteractionComponent->OnInteractionEndedDelegate.AddDynamic(this, &ThisClass::EnablePlayerInput);
+	}	
 
 	if (UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>())
 	{
