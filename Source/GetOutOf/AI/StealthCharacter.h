@@ -62,5 +62,14 @@ protected:
 private:
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionParams;
+
+	uint8 bIsActivated : 1 = false;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetIsActivated() { return bIsActivated; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetActivated(bool IsActivated) { bIsActivated = IsActivated; }
 	
 };

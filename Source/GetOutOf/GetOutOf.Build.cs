@@ -21,7 +21,8 @@ public class GetOutOf : ModuleRules
 			"LevelSequence",
 			"MovieScene",
 			"Slate",
-			"SlateCore"
+			"SlateCore",
+			"NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

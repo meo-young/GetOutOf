@@ -123,8 +123,13 @@ void AStealthCharacter::DestroyItem()
 void AStealthCharacter::OnPlayerOverlapped(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (!bIsActivated) return;
+	
+	LOG2(TEXT("콜리전 함수"));
+	LOG2(TEXT("Actor : %s"), *OtherActor->GetName());
 	if (OtherActor && OtherActor->IsA<AGOOCharacter>())
 	{
+		LOG2(TEXT("플레이어 닿음"));
 		ShowDeadScene();
 	}
 }

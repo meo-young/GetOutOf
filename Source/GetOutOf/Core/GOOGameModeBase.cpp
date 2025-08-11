@@ -9,14 +9,14 @@ void AGOOGameModeBase::StartPlay()
 {
 	Super::StartPlay();
 
-	const FString& UEDMapName = GetWorld()->GetMapName();
+	/*const FString& UEDMapName = GetWorld()->GetMapName();
 	const FString& CleanMapName = UEDMapName.Mid(GetWorld()->StreamingLevelsPrefix.Len());
 
 	if (CleanMapName != "LV_LoadingTutorial")
 	{
 		UStageSubSystem* StageSubsystem = GetGameInstance()->GetSubsystem<UStageSubSystem>();
 		StageSubsystem->StartStage();
-	}
+	}*/
 	
 }
 

@@ -67,5 +67,8 @@ private:
 public:
 	UFUNCTION(BlueprintCallable, Category = "Stage")
 	FORCEINLINE uint8 GetCurrentStageNum() { return CurrentStageNum; }
+
+	UFUNCTION(BlueprintCallable, Category = "Stage")
+	FORCEINLINE void SetCurrentStageNum(uint8 InCurrentStageNum) { CurrentStageNum = InCurrentStageNum; }
 	
 };

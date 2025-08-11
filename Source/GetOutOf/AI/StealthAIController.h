@@ -10,6 +10,9 @@ class GETOUTOF_API AStealthAIController : public AAIController
 	GENERATED_BODY()
 
 public:
+	virtual void OnPossess(APawn* InPawn) override;
+
+public:
 	UFUNCTION(BlueprintCallable)
 	void ActivateBehaviorTree();
 

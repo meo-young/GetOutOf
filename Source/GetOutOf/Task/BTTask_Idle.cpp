@@ -1,4 +1,5 @@
 #include "Task/BTTask_Idle.h"
+#include "GetOutOf.h"
 #include "AI/StealthAIController.h"
 #include "AI/StealthCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -25,11 +26,13 @@ EBTNodeResult::Type UBTTask_Idle::ExecuteTask(UBehaviorTreeComponent& OwnerComp,
 void UBTTask_Idle::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
-
+	
 	AStealthAIController* AIController = Cast<AStealthAIController>(OwnerComp.GetAIOwner());
 	AStealthCharacter* StealthCharacter = Cast<AStealthCharacter>(OwnerComp.GetAIOwner()->GetCharacter());
 
 	if (!AIController || !StealthCharacter) return;
+
+	if (!StealthCharacter->GetIsActivated()) return;
 
 	if (StealthCharacter->IsOutOfPlayerSight() || StealthCharacter->IsObstacleBetweenPlayer())
 	{
