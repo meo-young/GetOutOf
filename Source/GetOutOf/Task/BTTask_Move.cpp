@@ -37,7 +37,7 @@ void UBTTask_Move::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 
 	if (!AIController || !StealthCharacter) return;
 
-	if (!StealthCharacter->IsOutOfPlayerSight() && !StealthCharacter->IsObstacleBetweenPlayer())
+	if (StealthCharacter->CheckAllConditions())
 	{
 		AIController->GetBlackboardComponent()->SetValueAsBool("IsMoving", false);
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

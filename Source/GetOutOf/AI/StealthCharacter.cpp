@@ -47,6 +47,11 @@ void AStealthCharacter::BeginPlay()
 	StopAnimation();
 }
 
+bool AStealthCharacter::CheckAllConditions()
+{
+	return !IsOutOfPlayerSight() && !IsObstacleBetweenPlayer();
+}
+
 bool AStealthCharacter::IsOutOfPlayerSight()
 {
 	const FVector PlayerForward = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorForwardVector();
@@ -55,7 +60,7 @@ bool AStealthCharacter::IsOutOfPlayerSight()
 	const float Dot = FVector::DotProduct(PlayerForward, ToAI);
 	const float ViewingAngle = FMath::Acos(Dot) * (180.f / PI);
 	
-	if (ViewingAngle <= 60.0f)
+	if (ViewingAngle <= AcceptanceRadius)
 	{
 		return false;
 	}
@@ -125,7 +130,6 @@ void AStealthCharacter::OnPlayerOverlapped(UPrimitiveComponent* OverlappedCompon
 {
 	if (!bIsActivated) return;
 	
-	LOG2(TEXT("콜리전 함수"));
 	LOG2(TEXT("Actor : %s"), *OtherActor->GetName());
 	if (OtherActor && OtherActor->IsA<AGOOCharacter>())
 	{

@@ -81,7 +81,7 @@ protected:
 	void AddInventoryWidget();
 
 	/** 사운드 없이 후레쉬를 비활성화 하는 함수 */
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void StopFlashLightWithoutSound();
 
 protected:
@@ -140,15 +140,28 @@ private:
 	uint8 bIsInventoryWidgetOpen : 1 = false;
 	
 public:
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }
+	FORCEINLINE bool IsPlayerFlashLightOn() const { return bIsFlashLightOn; }
 	FORCEINLINE UInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UCameraComponent* GetCameraComponent() const { return CameraComponent; }
+	
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetEnableMove(const bool bIsEnable) { bIsEnableMove = bIsEnable; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetEnableSprint(const bool bIsEnable) { bIsEnableSprint = bIsEnable; GetCharacterMovement()->MaxWalkSpeed = 150.0f; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetEnableInteract(const bool bIsEnable) { bIsEnableInteract = bIsEnable; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetEnableFlashLight(const bool bIsEnable) { bIsEnableFlashLight = bIsEnable; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetEnableInventory(const bool bIsEnable) { bIsEnableInventory = bIsEnable; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetEnableLook(const bool bIsEnable) { bIsEnableLook = bIsEnable; }
 	
 };

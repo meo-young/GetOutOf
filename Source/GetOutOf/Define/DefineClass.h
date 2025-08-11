@@ -28,7 +28,8 @@ UENUM(BlueprintType)
 enum class EBGM : uint8
 {
 	HorrorBGM = 0,
-	LightHorrorBGM = 1
+	LightHorrorBGM = 1,
+	CrawlMannequinBGM = 2
 };
 
 UENUM(BlueprintType)
@@ -40,5 +41,7 @@ enum class EVoiceType : uint8
 	Donald = 3,
 	Jesus = 4,
 	SameThing = 5,
-	WhereAreYou = 6
+	WhereAreYou = 6,
+	HoldOn = 7,
+	TooDark = 8
 };

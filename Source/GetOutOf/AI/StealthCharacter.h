@@ -23,6 +23,9 @@ public:
 	FOnInteractionStart OnInteractionStartDelegate;
 
 public:
+	/** 움직이기 위한 모든 조건을 만족하는 지 확인하는 함수입니다. */
+	virtual bool CheckAllConditions();
+	
 	/** 플레이어의 시야각 밖에 AI가 존재하는 지 확인하는 함수입니다. */
 	bool IsOutOfPlayerSight();
 
@@ -58,6 +61,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UCameraComponent> CameraComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	float AcceptanceRadius = 60.0f;
 
 private:
 	FHitResult HitResult;
