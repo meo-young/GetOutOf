@@ -44,5 +44,8 @@ enum class EVoiceType : uint8
 	WhereAreYou = 6,
 	HoldOn = 7,
 	TooDark = 8,
-	FindMe = 9
+	FindMe = 9,
+	RedLight = 10,
+	GreenLight = 11,
+	LetsPlay = 12
 };
