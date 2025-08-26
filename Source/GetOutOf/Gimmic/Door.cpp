@@ -64,7 +64,7 @@ void ADoor::Interact_Implementation()
 
 	// 타이머 활성화
 	const uint8 CurrentStageNum = StageSubsystem->GetCurrentStageNum();
-	if (CurrentStageNum == 3 || CurrentStageNum == 6)
+	if (CurrentStageNum == 3 || CurrentStageNum == 6 || CurrentStageNum == 9)
 	{
 		GetWorldTimerManager().SetTimer(RestartTimer, FTimerDelegate::CreateLambda([this]
 		{

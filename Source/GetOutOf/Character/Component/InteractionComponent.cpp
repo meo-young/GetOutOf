@@ -91,13 +91,20 @@ void UInteractionComponent::StartInteraction()
 
 void UInteractionComponent::DoorInteraction()
 {
+	LOG2(TEXT("DoorInteraction 호출"));
 	// 상호작용 오브젝트 캐스팅
 	InteractableObject = Cast<IInteractable>(DoorHitResult.GetActor());
 
-	// 상호작용 오브젝트가 유효하다면 상호작용 함수 호출
-	if (InteractableObject)
+	const AActor* HitActor = DoorHitResult.GetActor();
+
+	if (HitActor && HitActor->GetClass())
 	{
-		IInteractable::Execute_Interact(InteractableObject->_getUObject());
+		// 상호작용 오브젝트가 유효하다면 상호작용 함수 호출
+		if (HitActor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+		{
+			LOG2(TEXT("Interact 호출"));
+			IInteractable::Execute_Interact(DoorHitResult.GetActor());
+		}	
 	}
 }
 

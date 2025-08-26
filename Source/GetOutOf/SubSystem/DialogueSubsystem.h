@@ -12,7 +12,6 @@ class GETOUTOF_API UDialogueSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	UDialogueSubsystem();
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 public:

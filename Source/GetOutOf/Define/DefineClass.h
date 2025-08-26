@@ -47,5 +47,6 @@ enum class EVoiceType : uint8
 	FindMe = 9,
 	RedLight = 10,
 	GreenLight = 11,
-	LetsPlay = 12
+	LetsPlay = 12,
+	BeingWith = 13
 };

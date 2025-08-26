@@ -15,3 +15,4 @@ Content/DerelictCorridor/Assets/Fab/Megascans/3D/Ind_Ware_Storage_Shelf_Metal_Ru
 Content/DerelictCorridor/Assets/Fab/Megascans/Surfaces/Ind_Unf_Floor_Concrete_Dirty_02/T_Ind_Unf_Floor_Concrete_Dirty_02_H.uasset filter=lfs diff=lfs merge=lfs -text
 T_Floor_wooden_B_worn_MultiMask.uasset filter=lfs diff=lfs merge=lfs -text
 T_Wall_exterior_brick_clean_MultiMask.uasset filter=lfs diff=lfs merge=lfs -text
+SM_Ind_Ware_Storage_Shelf_Metal_Rusted_01.uasset filter=lfs diff=lfs merge=lfs -text
