@@ -48,5 +48,16 @@ enum class EVoiceType : uint8
 	RedLight = 10,
 	GreenLight = 11,
 	LetsPlay = 12,
-	BeingWith = 13
+	BeingWith = 13,
+	Hello = 14,
+	SawMessage = 15,
+	Happened = 16,
+	ManagePhoto = 17,
+	Ididbut = 18,
+	But = 19,
+	RestNow = 20,
+	Tomorrow = 21,
+	Dream = 22,
+	Just = 23,
+	What = 24
 };

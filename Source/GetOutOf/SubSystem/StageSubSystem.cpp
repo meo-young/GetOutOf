@@ -18,7 +18,7 @@ void UStageSubSystem::Initialize(FSubsystemCollectionBase& Collection)
 		LOG(Error, TEXT("LevelSequenceDataTable이 유효하지 않습니다"));
 	}
 
-	CurrentStageNum = 8;
+	//CurrentStageNum = 8;
 }
 
 void UStageSubSystem::StartStage()
