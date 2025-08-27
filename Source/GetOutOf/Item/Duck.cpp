@@ -20,7 +20,7 @@ void ADuck::BeginPlay()
 void ADuck::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
+	
 	if (bIsRotating && Player)
 	{
 		RotateDuck(DeltaSeconds);
