@@ -60,5 +60,7 @@ enum class EVoiceType : uint8
 	Dream = 22,
 	Just = 23,
 	What = 24,
-	FeelsLikeMove = 25
+	FeelsLikeMove = 25,
+	ItsOver = 26,
+	ComePlayWithMe = 27
 };
