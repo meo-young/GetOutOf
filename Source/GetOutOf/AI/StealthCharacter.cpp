@@ -49,7 +49,8 @@ void AStealthCharacter::BeginPlay()
 
 bool AStealthCharacter::CheckAllConditions()
 {
-	return !IsOutOfPlayerSight() && !IsObstacleBetweenPlayer();
+	bIsInPlayerSight = !IsOutOfPlayerSight() && !IsObstacleBetweenPlayer();
+	return bIsInPlayerSight;
 }
 
 bool AStealthCharacter::IsOutOfPlayerSight()

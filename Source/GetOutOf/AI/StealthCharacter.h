@@ -69,6 +69,7 @@ private:
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionParams;
 
+	uint8 bIsInPlayerSight : 1 = false;
 	uint8 bIsActivated : 1 = false;
 
 public:

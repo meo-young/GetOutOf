@@ -52,6 +52,11 @@ void ADoor::Interact_Implementation()
 {
 	IInteractable::Interact_Implementation();
 
+	if (OnDoorOpenedDelegate.IsBound())
+	{
+		OnDoorOpenedDelegate.Broadcast();
+	}
+
 	// 플레이어 입력 비활성화
 	Cast<AGOOCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn())->DisablePlayerInput();
 

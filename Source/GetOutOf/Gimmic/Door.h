@@ -5,6 +5,8 @@
 #include "Interface/Interactable.h"
 #include "Door.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDoorOpened);
+
 class UBoxComponent;
 
 UCLASS()
@@ -15,6 +17,10 @@ class GETOUTOF_API ADoor : public AActor, public IInteractable
 public:	
 	ADoor();
 	virtual void BeginPlay() override;
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnDoorOpened OnDoorOpenedDelegate;
 
 public:
 	UFUNCTION()
