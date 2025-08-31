@@ -40,6 +40,8 @@ void ADoor::UnLockDoor()
 	USoundSubSystem* SoundSubsystem = GetGameInstance()->GetSubsystem<USoundSubSystem>();
 	SoundSubsystem->PlaySFX(ESFX::UnlockDoor, GetActorLocation(), FRotator::ZeroRotator);
 
+	PlayDoorUnlockAnimation();
+
 	DoorMesh->SetCollisionResponseToChannel(ECC_DOOR, ECR_Block);
 }
 

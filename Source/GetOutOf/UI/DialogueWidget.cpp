@@ -17,7 +17,7 @@ void UDialogueWidget::SetDialogueText(const FString& InDialogueText)
 	{
 		DialogueText->SetText(FText::FromString(InDialogueText));
 
-		uint8 DialogueLength = InDialogueText.Len();
+		float DialogueLength = InDialogueText.Len();
 
 		GetWorld()->GetTimerManager().SetTimer(DialogueTextTimer, this, &ThisClass::RemoveDialogueText, DialogueLength/5, false);
 	}

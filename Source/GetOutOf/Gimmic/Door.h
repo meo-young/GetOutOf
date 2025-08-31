@@ -30,6 +30,9 @@ public:
 	void LockDoor();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void PlayDoorUnlockAnimation();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void PlayDoorOpenAnimation();
 
 	virtual void Interact_Implementation() override;
